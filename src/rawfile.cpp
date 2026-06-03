@@ -9,7 +9,7 @@ char *LoadRawFile(const char *filename, int &width, int &height)
 {
 	FILE *pFile;
 
-	char path[80];
+	char path[256];
 	//strcpy(path, "data/");
 	strcpy(path, filename);
 	pFile = fopen(path, "rb");

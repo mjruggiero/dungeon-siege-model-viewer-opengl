@@ -10,7 +10,7 @@
 
 #include <gl/freeglut.h>
 #include "aspfile.h"
-#include "prsfile.h"
+#include "Animation.h"
 using namespace std;
 
 class CFileTreeNode
@@ -94,24 +94,6 @@ private:
 	btri_t m_Face;
 	bvwl_t m_VertexWeight;
 	stch_t m_Stitches;
-
-};
-
-class CAnimation
-{
-public:
-	CAnimation();
-	~CAnimation();
-	bool Load(const char* filename);
-	void Print();
-	friend class CASPModel;
-
-private:
-	anim_t m_Anim;
-	note_t m_Notes;
-	trcr_t m_Trcr;
-	rkey_t m_GlobalKeys;
-	klst_t* m_Keys;
 
 };
 
