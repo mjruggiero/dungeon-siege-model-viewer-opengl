@@ -46,57 +46,65 @@ void Bone::AddChild(Bone* pBone)
 
 void Bone::Render()
 {
-	// save original matrix before mucking with it
 	glPushMatrix();
 
-	//glLoadIdentity();
-
-	// do rotation
-	quaternion_t axisAngle;
-	axisAngle = ConvertToAxisAngle(inverseRotation);
-	//glRotatef(axisAngle.w, axisAngle.x, axisAngle.y, axisAngle.z);
-
-	// do translation
-	//glTranslatef(-inverseTranslation.x, -inverseTranslation.y, -inverseTranslation.z);
-
-	axisAngle = ConvertToAxisAngle(localRotation);
-	glRotatef(axisAngle.w, axisAngle.x, axisAngle.y, axisAngle.z);
-
+	// Match AspModel::Interpolate() transform order.
 	glTranslatef(localTranslation.x, localTranslation.y, localTranslation.z);
 
-	//glMultMatrixf(m_localMatrix);
+	quaternion_t axisAngle = ConvertToAxisAngle(localRotation);
+	if (axisAngle.w != 0.0f)
+	{
+		glRotatef(axisAngle.w, axisAngle.x, axisAngle.y, axisAngle.z);
+	}
 
-	// draw this node
+	// Draw local bone axes at this joint.
 	glBegin(GL_LINES);
 
-	// x axis
+	// X axis - red
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.05f, 0.0f, 0.0f);
+	glVertex3f(0.10f, 0.0f, 0.0f);
 
-	// y axis
+	// Y axis - green
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.05f, 0.0f);
+	glVertex3f(0.0f, 0.10f, 0.0f);
 
-	// z axis
+	// Z axis - blue
 	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.05f);
+	glVertex3f(0.0f, 0.0f, 0.10f);
 
 	glEnd();
 
-	// restore original matrix
+	// Draw connection lines from this bone to each direct child.
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+
+	for (Bone* child = m_pChild; child != nullptr; child = child->m_pSibling)
+	{
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(
+			child->localTranslation.x,
+			child->localTranslation.y,
+			child->localTranslation.z);
+	}
+
+	glEnd();
+
+	// Children must be rendered while this bone's transform is still active.
+	if (m_pChild != nullptr)
+	{
+		m_pChild->Render();
+	}
+
 	glPopMatrix();
 
-	// draw children, if any
-	if (m_pChild)
-		m_pChild->Render();
-
-
-	// draw siblings, if any
-	if (m_pSibling)
+	// Siblings render after restoring this bone's parent transform.
+	if (m_pSibling != nullptr)
+	{
 		m_pSibling->Render();
+	}
 }
 
 void Bone::Print()
