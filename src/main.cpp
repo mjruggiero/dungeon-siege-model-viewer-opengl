@@ -11,7 +11,6 @@
 #include "ResourceResolver.h"
 #include "ViewerConfig.h"
 #include "Model.h"
-#include "Utilities.h"
 
 CASPModel model;
 float angle = 0.0f;

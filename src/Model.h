@@ -1,98 +1,16 @@
 #pragma once
 
+#include "AspFile.h"
+#include "Animation.h"
+#include "Bone.h"
+#include "ResourceResolver.h"
+
+#include <gl/freeglut.h>
+
 #include <stdio.h>
 #include <filesystem>
 #include <string>
 #include <vector>
-
-#include <gl/freeglut.h>
-#include "AspFile.h"
-#include "Animation.h"
-#include "ResourceResolver.h"
-
-class CFileTreeNode
-{
-public:
-	CFileTreeNode();
-	~CFileTreeNode();
-	void AddChild(CFileTreeNode* pChild);
-
-	CFileTreeNode* m_pParent;
-	CFileTreeNode* m_pChild;
-	CFileTreeNode* m_pSibling;
-	char m_pszAcronym[16];
-	char m_pszPath[128];
-	char m_pszName[128];
-};
-
-class CName
-{
-public:
-	char m_pszAcronym[16];
-	char m_pszPath[128];
-	char m_pszName[128];
-};
-
-class CFilePathTree
-{
-public:
-	CFilePathTree();
-	~CFilePathTree();
-	bool ParseNNKFile(const char* filename);
-	char* GetFilePath(const char* filename);
-
-private:
-	std::vector<CName> m_vNames;
-
-};
-
-class CBone
-{
-public:
-	CBone();
-	~CBone();
-	void AddChild(CBone* pBone);
-	void Render();
-	void Print();
-
-	int id;
-	char* name;
-	CBone* m_pParent;
-	CBone* m_pSibling;
-	CBone* m_pChild;
-	quaternion_t inverseRotation;
-	vector_t inverseTranslation;
-	quaternion_t localRotation;
-	vector_t localTranslation;
-	float m_localMatrix[16];
-};
-
-class CSubMesh
-{
-public:
-	CSubMesh();
-	~CSubMesh();
-	bool Read(FILE* pFile, int numBones);
-	void Print();
-	void Render(int type);
-	void Update();
-
-	unsigned int* tex;
-	CBone* m_pBones;
-private:
-	int m_numBones;
-	bsub_t m_header;
-	bsmm_t m_Material;
-	bvtx_t m_Vertex;
-	bcrn_t m_Corner;
-	vector_t* m_Vertices;
-	wcrn_t m_CornerExtended;
-	bvmp_t m_VertexMapping;
-	btri_t m_Face;
-	bvwl_t m_VertexWeight;
-	stch_t m_Stitches;
-
-};
 
 class CASPModel
 {
@@ -119,7 +37,6 @@ public:
 	friend class CSubMesh;
 
 	CAnimation m_Anim;
-	CFilePathTree m_pathTree;
 
 private:
 	unsigned int tex[8];
@@ -137,5 +54,4 @@ private:
 
 	ResourceResolver m_resourceResolver;
 	bool m_useResourceResolver{};
-
 };
