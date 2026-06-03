@@ -4,7 +4,7 @@
 
 #include <GL/freeglut.h>
 
-CSubMesh::CSubMesh()
+SubMesh::SubMesh()
 {
 	m_Material.materials = nullptr;
 	m_Vertex.vertices = nullptr;
@@ -17,7 +17,7 @@ CSubMesh::CSubMesh()
 	m_Stitches.stitches = nullptr;
 }
 
-CSubMesh::~CSubMesh()
+SubMesh::~SubMesh()
 {
 	if (m_Material.materials)
 		delete[] m_Material.materials;
@@ -65,7 +65,7 @@ CSubMesh::~CSubMesh()
 	}
 }
 
-bool CSubMesh::Read(FILE* pFile, int numBones)
+bool SubMesh::Read(FILE* pFile, int numBones)
 {
 	m_numBones = numBones;
 	int i;
@@ -206,7 +206,7 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	return true;
 }
 
-void CSubMesh::Print()
+void SubMesh::Print()
 {
 	if (!Log::IsDebugEnabled())
 	{
@@ -334,7 +334,7 @@ void CSubMesh::Print()
 	}
 }
 
-void CSubMesh::Render(int type)
+void SubMesh::Render(int type)
 {
 
 	int i;
@@ -424,7 +424,7 @@ void CSubMesh::Render(int type)
 	}
 }
 
-void CSubMesh::Update()
+void SubMesh::Update()
 {
 	for (int i = 0; i < m_header.numCorners; ++i)
 	{

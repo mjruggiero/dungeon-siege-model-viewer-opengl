@@ -5,18 +5,18 @@
 
 #include <cstdio>
 
-class CSubMesh
+class SubMesh
 {
 public:
-	CSubMesh();
-	~CSubMesh();
+	SubMesh();
+	~SubMesh();
 	bool Read(FILE* pFile, int numBones);
 	void Print();
 	void Render(int type);
 	void Update();
 
 	unsigned int* tex;
-	CBone* m_pBones;
+	Bone* m_pBones;
 private:
 	int m_numBones;
 	bsub_t m_header;

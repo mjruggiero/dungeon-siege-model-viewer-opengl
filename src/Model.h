@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-class CASPModel
+class ASPModel
 {
 public:
-	CASPModel();
-	~CASPModel();
+	ASPModel();
+	~ASPModel();
 
 	void Initialize(
 		const char* basePath,
@@ -30,22 +30,22 @@ public:
 	void LoadTextures();
 	void Render(int type);
 	void Update(long deltaTime);
-	void Interpolate(const float delta, CBone* pBone);
+	void Interpolate(const float delta, Bone* pBone);
 	void PrintBoneInfo();
 
 	// friends
-	friend class CSubMesh;
+	friend class SubMesh;
 
-	CAnimation m_Anim;
+	Animation m_Anim;
 
 private:
 	unsigned int tex[8];
 	bmsh_t m_header;
 	bonh_t* m_pMeshBones;
-	CSubMesh* m_pSubMesh;
+	SubMesh* m_pSubMesh;
 	rpos_t m_BoneInfo;
 	bbox_t m_BoundingBox;
-	CBone* m_pBones;
+	Bone* m_pBones;
 
 	std::string m_strBasePath;
 	std::string m_strModelPath;

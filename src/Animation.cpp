@@ -7,12 +7,12 @@
 #include <cstdio>
 #include <cstring>
 
-CAnimation::CAnimation()
+Animation::Animation()
 {
 	m_Keys = nullptr;
 }
 
-CAnimation::~CAnimation()
+Animation::~Animation()
 {
 	if (m_Anim.textField)
 		delete[] m_Anim.textField;
@@ -24,7 +24,7 @@ CAnimation::~CAnimation()
 		delete[] m_Keys;
 }
 
-bool CAnimation::Load(const char* filename)
+bool Animation::Load(const char* filename)
 {
 	FILE* pFile;
 	int i;
@@ -119,7 +119,7 @@ bool CAnimation::Load(const char* filename)
 	return true;
 }
 
-void CAnimation::Print()
+void Animation::Print()
 {
 	if (!Log::IsDebugEnabled())
 	{

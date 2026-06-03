@@ -12,7 +12,7 @@
 #include "ViewerConfig.h"
 #include "Model.h"
 
-CASPModel model;
+ASPModel model;
 float angle = 0.0f;
 long startTime;
 

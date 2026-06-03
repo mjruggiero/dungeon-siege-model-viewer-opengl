@@ -3,18 +3,18 @@
 #include "Math.h"
 #include "PrsFile.h"
 
-class CASPModel;
+class ASPModel;
 
-class CAnimation
+class Animation
 {
 public:
-	CAnimation();
-	~CAnimation();
+	Animation();
+	~Animation();
 
 	bool Load(const char* filename);
 	void Print();
 
-	friend class CASPModel;
+	friend class ASPModel;
 
 private:
 	anim_t m_Anim;

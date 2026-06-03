@@ -2,20 +2,20 @@
 
 #include "Math.h"
 
-class CBone
+class Bone
 {
 public:
-	CBone();
-	~CBone();
-	void AddChild(CBone* pBone);
+	Bone();
+	~Bone();
+	void AddChild(Bone* pBone);
 	void Render();
 	void Print();
 
 	int id;
 	char* name;
-	CBone* m_pParent;
-	CBone* m_pSibling;
-	CBone* m_pChild;
+	Bone* m_pParent;
+	Bone* m_pSibling;
+	Bone* m_pChild;
 	quaternion_t inverseRotation;
 	vector_t inverseTranslation;
 	quaternion_t localRotation;

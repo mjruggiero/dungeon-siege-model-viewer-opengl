@@ -10,14 +10,14 @@
 
 extern bool bones;
 
-CASPModel::CASPModel()
+ASPModel::ASPModel()
 {
 	m_pBones = nullptr;
 	m_pSubMesh = nullptr;
 	m_BoneInfo.positions = nullptr;
 }
 
-CASPModel::~CASPModel()
+ASPModel::~ASPModel()
 {
 	if (m_pBones)
 		delete[] m_pBones;
@@ -29,7 +29,7 @@ CASPModel::~CASPModel()
 		delete[] m_BoneInfo.positions;
 }
 
-void CASPModel::Initialize(
+void ASPModel::Initialize(
 	const char* basePath,
 	const char* modelPath,
 	const char* animationPath,
@@ -45,13 +45,13 @@ void CASPModel::Initialize(
 	m_useResourceResolver = false;
 }
 
-void CASPModel::Initialize(ResourceResolver resourceResolver)
+void ASPModel::Initialize(ResourceResolver resourceResolver)
 {
 	m_resourceResolver = std::move(resourceResolver);
 	m_useResourceResolver = true;
 }
 
-bool CASPModel::Load(const char* filename)
+bool ASPModel::Load(const char* filename)
 {
 	FILE* pFile;
 	version_t version;
@@ -116,7 +116,7 @@ bool CASPModel::Load(const char* filename)
 	}
 
 	// read bsub
-	m_pSubMesh = new CSubMesh[m_header.numSubmeshes];
+	m_pSubMesh = new SubMesh[m_header.numSubmeshes];
 
 	for (int i = 0; i < m_header.numSubmeshes; ++i)
 	{
@@ -136,7 +136,7 @@ bool CASPModel::Load(const char* filename)
 	fread(m_BoneInfo.positions, sizeof(position_t), m_BoneInfo.numBones, pFile);
 
 	// setup bones
-	m_pBones = new CBone[m_header.numBones];
+	m_pBones = new Bone[m_header.numBones];
 	for (int i = 0; i < m_header.numBones; ++i)
 	{
 		m_pBones[i].id = i;
@@ -149,7 +149,7 @@ bool CASPModel::Load(const char* filename)
 		// link
 		if (m_pMeshBones[i].index != m_pMeshBones[i].parentIndex)
 		{
-			CBone* pParent = &m_pBones[m_pMeshBones[i].parentIndex];
+			Bone* pParent = &m_pBones[m_pMeshBones[i].parentIndex];
 			pParent->AddChild(&m_pBones[i]);
 		}
 	}
@@ -183,7 +183,7 @@ bool CASPModel::Load(const char* filename)
 	return true;
 }
 
-void CASPModel::Print()
+void ASPModel::Print()
 {
 	if (!Log::IsDebugEnabled())
 	{
@@ -246,7 +246,7 @@ void CASPModel::Print()
 	Log::Debug() << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << std::endl;
 }
 
-void CASPModel::LoadTextures()
+void ASPModel::LoadTextures()
 {
 	int width, height;
 	int index = 0;
@@ -298,7 +298,7 @@ void CASPModel::LoadTextures()
 	}
 }
 
-void CASPModel::Render(int type)
+void ASPModel::Render(int type)
 {
 	int i;
 
@@ -316,7 +316,7 @@ void CASPModel::Render(int type)
 	}
 }
 
-void CASPModel::Update(long deltaTime)
+void ASPModel::Update(long deltaTime)
 {
 	long duration = m_Anim.m_Anim.duration * 1000;
 	float delta = (deltaTime % duration) / (float)duration;
@@ -342,7 +342,7 @@ void CASPModel::Update(long deltaTime)
 	}
 }
 
-void CASPModel::Interpolate(const float delta, CBone* pBone)
+void ASPModel::Interpolate(const float delta, Bone* pBone)
 {
 	// push modelview matrix onto stack 
 	glPushMatrix();
@@ -452,7 +452,7 @@ void CASPModel::Interpolate(const float delta, CBone* pBone)
 		Interpolate(delta, pBone->m_pSibling);
 }
 
-bool CASPModel::LoadAnimation(const char* filename)
+bool ASPModel::LoadAnimation(const char* filename)
 {
 	std::filesystem::path fullPath;
 
@@ -476,7 +476,7 @@ bool CASPModel::LoadAnimation(const char* filename)
 	return m_Anim.Load(fullPath.string().c_str());
 }
 
-void CASPModel::PrintBoneInfo()
+void ASPModel::PrintBoneInfo()
 {
 	if (!Log::IsDebugEnabled())
 	{

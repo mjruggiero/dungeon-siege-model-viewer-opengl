@@ -4,7 +4,7 @@
 
 #include <gl/freeglut.h>
 
-CBone::CBone()
+Bone::Bone()
 {
 	name = nullptr;
 	m_pParent = nullptr;
@@ -14,7 +14,7 @@ CBone::CBone()
 	glGetFloatv(GL_MODELVIEW_MATRIX, m_localMatrix);
 }
 
-CBone::~CBone()
+Bone::~Bone()
 {
 	/* FIX THIS!!
 	if(m_pChild)
@@ -36,7 +36,7 @@ CBone::~CBone()
 	*/
 }
 
-void CBone::AddChild(CBone* pBone)
+void Bone::AddChild(Bone* pBone)
 {
 	if (m_pChild == nullptr)
 	{
@@ -44,7 +44,7 @@ void CBone::AddChild(CBone* pBone)
 	}
 	else
 	{
-		CBone* pIter = m_pChild;
+		Bone* pIter = m_pChild;
 		while (pIter->m_pSibling != nullptr)
 		{
 			pIter = pIter->m_pSibling;
@@ -56,7 +56,7 @@ void CBone::AddChild(CBone* pBone)
 	pBone->m_pParent = this;
 }
 
-void CBone::Render()
+void Bone::Render()
 {
 	// save original matrix before mucking with it
 	glPushMatrix();
@@ -111,7 +111,7 @@ void CBone::Render()
 		m_pSibling->Render();
 }
 
-void CBone::Print()
+void Bone::Print()
 {
 	if (!Log::IsDebugEnabled())
 	{
