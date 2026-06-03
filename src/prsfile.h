@@ -1,6 +1,4 @@
-
-#ifndef _PRSFILE_H_
-#define _PRSFILE_H_
+#pragma once
 
 #pragma pack(push,1)
 
@@ -13,7 +11,7 @@ typedef struct
 	quaternion_t unknownQuaternion1;
 	quaternion_t unknownQuaternion2;
 	float unknown;
-	char *textField;
+	char* textField;
 } anim_t;
 
 typedef struct
@@ -25,7 +23,7 @@ typedef struct
 typedef struct
 {
 	int numNotes;
-	noteInfo_t *notes;
+	noteInfo_t* notes;
 } note_t;
 
 typedef struct
@@ -36,7 +34,7 @@ typedef struct
 typedef struct
 {
 	int numItems;
-	itemInfo_t *items;
+	itemInfo_t* items;
 	int unknown;
 } trcr_t;
 
@@ -56,8 +54,8 @@ typedef struct
 {
 	int numRotations;
 	int numPositions;
-	rotationKey_t *rotations;
-	positionKey_t *positions;
+	rotationKey_t* rotations;
+	positionKey_t* positions;
 } keyframes_t;
 
 typedef struct
@@ -74,9 +72,7 @@ typedef struct
 
 typedef struct
 {
-	
+
 } aend_t;
 
 #pragma pack(pop)
-
-#endif // _PRSFILE_H_

@@ -1,10 +1,6 @@
-// model.h
-
-#ifndef _MODEL_H_
-#define _MODEL_H_
+#pragma once
 
 #include <stdio.h>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -138,5 +134,3 @@ private:
 	std::string m_strTexturePath;
 
 };
-
-#endif // _MODEL_H_

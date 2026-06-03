@@ -1,6 +1,5 @@
-// model.cpp
-
 #include "model.h"
+#include "Log.h"
 
 extern bool bones;
 
@@ -13,7 +12,6 @@ CFileTreeNode::CFileTreeNode()
 
 CFileTreeNode::~CFileTreeNode()
 {
-
 }
 
 void CFileTreeNode::AddChild(CFileTreeNode* pChild)
@@ -96,12 +94,12 @@ bool CFilePathTree::ParseNNKFile(const char* filename)
 
 	fclose(pFile);
 
-	//cout << "length of names=" << m_vNames.size() << endl;
+	//Log::Info() << "length of names=" << m_vNames.size() << endl;
 	//for(std::vector<CName>::iterator it = m_vNames.begin(); it != m_vNames.end(); ++it)
 	//{
-	//	cout << "acronym=" << it->m_pszAcronym << endl;
-	//	cout << "path=" << it->m_pszPath << endl;
-	//	cout << "name=" << it->m_pszName << endl;
+	//	Log::Info() << "acronym=" << it->m_pszAcronym << endl;
+	//	Log::Info() << "path=" << it->m_pszPath << endl;
+	//	Log::Info() << "name=" << it->m_pszName << endl;
 	//}
 
 	return true;
@@ -186,18 +184,18 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_header, sizeof(bsub_t), 1, pFile);
 
 	// read material
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_Material.numMaterials, sizeof(int), 1, pFile);
 	m_Material.materials = new material_t[m_Material.numMaterials];
 	fread(m_Material.materials, sizeof(material_t), m_Material.numMaterials, pFile);
@@ -206,9 +204,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_Vertex.numVertices, sizeof(int), 1, pFile);
 	m_Vertices = new vector_t[m_header.numCorners];
 	m_Vertex.vertices = new vector_t[m_Vertex.numVertices];
@@ -224,9 +222,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_Corner.numCorners, sizeof(int), 1, pFile);
 	m_Corner.corners = new corner_t[m_Corner.numCorners];
 	fread(m_Corner.corners, sizeof(corner_t), m_Corner.numCorners, pFile);
@@ -235,9 +233,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_CornerExtended.numCorners, sizeof(int), 1, pFile);
 	m_CornerExtended.corners = new wcorner_t[m_CornerExtended.numCorners];
 	fread(m_CornerExtended.corners, sizeof(wcorner_t), m_CornerExtended.numCorners, pFile);
@@ -246,9 +244,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	m_VertexMapping.vertexMaps = new vertexMap_t[m_Vertex.numVertices];
 	for (i = 0; i < m_Vertex.numVertices; ++i)
 	{
@@ -261,9 +259,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_Face.numFaces, sizeof(int), 1, pFile);
 	m_Face.materials = new material_t[m_Material.numMaterials];
 	fread(m_Face.materials, sizeof(material_t), m_Material.numMaterials, pFile);
@@ -281,9 +279,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	m_VertexWeight.bones = new bone_t[numBones];
 	for (i = 0; i < numBones; ++i)
 	{
@@ -301,9 +299,9 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "type=" << type << endl;
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "type=" << type << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_Stitches.numStitches, sizeof(int), 1, pFile);
 	m_Stitches.stitches = new stitch_t[m_Stitches.numStitches];
 	for (i = 0; i < m_Stitches.numStitches; ++i)
@@ -319,123 +317,123 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 void CSubMesh::Print()
 {
 	int i;
-	cout << "HEADER" << endl;
-	cout << "m_header.id=" << m_header.id << endl;
-	cout << "m_header.numMaterials=" << m_header.numMaterials << endl;
-	cout << "m_header.numVertices=" << m_header.numVertices << endl;
-	cout << "m_header.numCorners=" << m_header.numCorners << endl;
-	cout << "m_header.numFaces=" << m_header.numFaces << endl;
+	Log::Info() << "HEADER" << endl;
+	Log::Info() << "m_header.id=" << m_header.id << endl;
+	Log::Info() << "m_header.numMaterials=" << m_header.numMaterials << endl;
+	Log::Info() << "m_header.numVertices=" << m_header.numVertices << endl;
+	Log::Info() << "m_header.numCorners=" << m_header.numCorners << endl;
+	Log::Info() << "m_header.numFaces=" << m_header.numFaces << endl;
 
-	cout << "MATERIALS" << endl;
-	cout << "m_Material.numMaterials=" << m_Material.numMaterials << endl;
+	Log::Info() << "MATERIALS" << endl;
+	Log::Info() << "m_Material.numMaterials=" << m_Material.numMaterials << endl;
 	for (i = 0; i < m_Material.numMaterials; ++i)
 	{
-		cout << "m_Material.materials[" << i << "].index=" << m_Material.materials[i].index << endl;
-		cout << "m_Material.materials[" << i << "].numFaces=" << m_Material.materials[i].numFaces << endl;
+		Log::Info() << "m_Material.materials[" << i << "].index=" << m_Material.materials[i].index << endl;
+		Log::Info() << "m_Material.materials[" << i << "].numFaces=" << m_Material.materials[i].numFaces << endl;
 	}
 
-	cout << "VERTEX" << endl;
-	cout << "m_Vertex.numVertices=" << m_Vertex.numVertices << endl;
+	Log::Info() << "VERTEX" << endl;
+	Log::Info() << "m_Vertex.numVertices=" << m_Vertex.numVertices << endl;
 	for (i = 0; i < m_Vertex.numVertices; ++i)
 	{
-		cout << "m_Vertex.vertices[" << i << "].=(" << m_Vertex.vertices[i].x << ","
+		Log::Info() << "m_Vertex.vertices[" << i << "].=(" << m_Vertex.vertices[i].x << ","
 			<< m_Vertex.vertices[i].y << ","
 			<< m_Vertex.vertices[i].z << ")" << endl;
 	}
 
-	cout << "CORNER" << endl;
-	cout << "m_Corner.numCorners=" << m_Corner.numCorners << endl;
+	Log::Info() << "CORNER" << endl;
+	Log::Info() << "m_Corner.numCorners=" << m_Corner.numCorners << endl;
 	for (i = 0; i < m_Corner.numCorners; ++i)
 	{
-		cout << "m_Corner.corners[" << i << "].vertexIndex=" << m_Corner.corners[i].vertexIndex << endl;
-		cout << "m_Corner.corners[" << i << "].normal=(" << m_Corner.corners[i].normal.x << ","
+		Log::Info() << "m_Corner.corners[" << i << "].vertexIndex=" << m_Corner.corners[i].vertexIndex << endl;
+		Log::Info() << "m_Corner.corners[" << i << "].normal=(" << m_Corner.corners[i].normal.x << ","
 			<< m_Corner.corners[i].normal.x << ","
 			<< m_Corner.corners[i].normal.x << ")" << endl;
-		cout << "m_Corner.corners[" << i << "].unknown1=" << m_Corner.corners[i].unknown1 << endl;
-		cout << "m_Corner.corners[" << i << "].unknown2=" << m_Corner.corners[i].unknown2 << endl;
-		cout << "m_Corner.corners[" << i << "].u=" << m_Corner.corners[i].u << endl;
-		cout << "m_Corner.corners[" << i << "].v=" << m_Corner.corners[i].v << endl;
+		Log::Info() << "m_Corner.corners[" << i << "].unknown1=" << m_Corner.corners[i].unknown1 << endl;
+		Log::Info() << "m_Corner.corners[" << i << "].unknown2=" << m_Corner.corners[i].unknown2 << endl;
+		Log::Info() << "m_Corner.corners[" << i << "].u=" << m_Corner.corners[i].u << endl;
+		Log::Info() << "m_Corner.corners[" << i << "].v=" << m_Corner.corners[i].v << endl;
 	}
 
-	cout << "EXTENDED CORNER" << endl;
-	cout << "m_CornerExtended.numCorners=" << m_CornerExtended.numCorners << endl;
+	Log::Info() << "EXTENDED CORNER" << endl;
+	Log::Info() << "m_CornerExtended.numCorners=" << m_CornerExtended.numCorners << endl;
 	for (i = 0; i < m_CornerExtended.numCorners; ++i)
 	{
-		cout << "m_CornerExtended.corners[" << i << "].position=(" << m_CornerExtended.corners[i].position.x << ","
+		Log::Info() << "m_CornerExtended.corners[" << i << "].position=(" << m_CornerExtended.corners[i].position.x << ","
 			<< m_CornerExtended.corners[i].position.y << ","
 			<< m_CornerExtended.corners[i].position.z << ")" << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneWeight0=" << m_CornerExtended.corners[i].boneWeight0 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneWeight1=" << m_CornerExtended.corners[i].boneWeight1 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneWeight2=" << m_CornerExtended.corners[i].boneWeight2 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneWeight3=" << m_CornerExtended.corners[i].boneWeight3 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneIndex0=" << (short)m_CornerExtended.corners[i].boneIndex0 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneIndex1=" << (short)m_CornerExtended.corners[i].boneIndex1 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneIndex2=" << (short)m_CornerExtended.corners[i].boneIndex2 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].boneIndex3=" << (short)m_CornerExtended.corners[i].boneIndex3 << endl;
-		cout << "m_CornerExtended.corners[" << i << "].normal=(" << m_CornerExtended.corners[i].normal.x << ","
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneWeight0=" << m_CornerExtended.corners[i].boneWeight0 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneWeight1=" << m_CornerExtended.corners[i].boneWeight1 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneWeight2=" << m_CornerExtended.corners[i].boneWeight2 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneWeight3=" << m_CornerExtended.corners[i].boneWeight3 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneIndex0=" << (short)m_CornerExtended.corners[i].boneIndex0 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneIndex1=" << (short)m_CornerExtended.corners[i].boneIndex1 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneIndex2=" << (short)m_CornerExtended.corners[i].boneIndex2 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].boneIndex3=" << (short)m_CornerExtended.corners[i].boneIndex3 << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].normal=(" << m_CornerExtended.corners[i].normal.x << ","
 			<< m_CornerExtended.corners[i].normal.y << ","
 			<< m_CornerExtended.corners[i].normal.z << ")" << endl;
-		cout << "m_CornerExtended.corners[" << i << "].unknown=" << m_CornerExtended.corners[i].unknown << endl;
-		cout << "m_CornerExtended.corners[" << i << "].u=" << m_CornerExtended.corners[i].u << endl;
-		cout << "m_CornerExtended.corners[" << i << "].v=" << m_CornerExtended.corners[i].v << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].unknown=" << m_CornerExtended.corners[i].unknown << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].u=" << m_CornerExtended.corners[i].u << endl;
+		Log::Info() << "m_CornerExtended.corners[" << i << "].v=" << m_CornerExtended.corners[i].v << endl;
 	}
 
-	cout << "VERTEX MAPPING" << endl;
+	Log::Info() << "VERTEX MAPPING" << endl;
 	for (i = 0; i < m_Vertex.numVertices; ++i)
 	{
-		cout << "m_VertexMapping.vertexMaps[" << i << "].numCorners=" << m_VertexMapping.vertexMaps[i].numCorners << endl;
-		cout << "m_VertexMapping.vertexMaps[" << i << "].cornerIndices=";
+		Log::Info() << "m_VertexMapping.vertexMaps[" << i << "].numCorners=" << m_VertexMapping.vertexMaps[i].numCorners << endl;
+		Log::Info() << "m_VertexMapping.vertexMaps[" << i << "].cornerIndices=";
 		for (int j = 0; j < m_VertexMapping.vertexMaps[i].numCorners; ++j)
 		{
 			if (j)
-				cout << ",";
-			cout << m_VertexMapping.vertexMaps[i].cornerIndices[j];
+				Log::Info() << ",";
+			Log::Info() << m_VertexMapping.vertexMaps[i].cornerIndices[j];
 		}
-		cout << endl;
+		Log::Info() << endl;
 	}
 
-	cout << "FACE" << endl;
-	cout << "m_Face.numFaces=" << m_Face.numFaces << endl;
+	Log::Info() << "FACE" << endl;
+	Log::Info() << "m_Face.numFaces=" << m_Face.numFaces << endl;
 	for (i = 0; i < m_Material.numMaterials; ++i)
 	{
-		cout << "m_Faces.materials[" << i << "].index=" << m_Face.materials[i].index << endl;
-		cout << "m_Faces.materials[" << i << "].numFaces=" << m_Face.materials[i].numFaces << endl;
+		Log::Info() << "m_Faces.materials[" << i << "].index=" << m_Face.materials[i].index << endl;
+		Log::Info() << "m_Faces.materials[" << i << "].numFaces=" << m_Face.materials[i].numFaces << endl;
 	}
 	for (i = 0; i < m_Face.numFaces; ++i)
 	{
-		cout << "m_Faces.faces[" << i << "].indexCornerA=" << m_Face.faces[i].indexCornerA << endl;
-		cout << "m_Faces.faces[" << i << "].indexCornerB=" << m_Face.faces[i].indexCornerB << endl;
-		cout << "m_Faces.faces[" << i << "].indexCornerC=" << m_Face.faces[i].indexCornerC << endl;
+		Log::Info() << "m_Faces.faces[" << i << "].indexCornerA=" << m_Face.faces[i].indexCornerA << endl;
+		Log::Info() << "m_Faces.faces[" << i << "].indexCornerB=" << m_Face.faces[i].indexCornerB << endl;
+		Log::Info() << "m_Faces.faces[" << i << "].indexCornerC=" << m_Face.faces[i].indexCornerC << endl;
 	}
 
-	cout << "VERTEX WEIGHTS" << endl;
+	Log::Info() << "VERTEX WEIGHTS" << endl;
 	for (i = 0; i < m_numBones; ++i)
 	{
-		cout << "m_VertexWeight.bones[" << i << "].numVertices=" << m_VertexWeight.bones[i].numVertices << endl;
+		Log::Info() << "m_VertexWeight.bones[" << i << "].numVertices=" << m_VertexWeight.bones[i].numVertices << endl;
 		for (int j = 0; j < m_VertexWeight.bones[i].numVertices; ++j)
 		{
-			cout << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].index="
+			Log::Info() << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].index="
 				<< m_VertexWeight.bones[i].vertices[j].index << endl;
-			cout << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].weighting="
+			Log::Info() << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].weighting="
 				<< m_VertexWeight.bones[i].vertices[j].weighting << endl;
 		}
 	}
 
-	cout << "STITCHES" << endl;
+	Log::Info() << "STITCHES" << endl;
 	//stch_t m_Stitches;
-	cout << "m_Stitches.x=" << m_Stitches.numStitches << endl;
+	Log::Info() << "m_Stitches.x=" << m_Stitches.numStitches << endl;
 	for (i = 0; i < m_Stitches.numStitches; ++i)
 	{
-		cout << "m_Stitches.stitches[" << i << "].token=" << m_Stitches.stitches[i].token << endl;
-		cout << "m_Stitches.stitches[" << i << "].numVertices=" << m_Stitches.stitches[i].numVertices << endl;
-		cout << "m_Stitches.stitches[" << i << "].vertices=";
+		Log::Info() << "m_Stitches.stitches[" << i << "].token=" << m_Stitches.stitches[i].token << endl;
+		Log::Info() << "m_Stitches.stitches[" << i << "].numVertices=" << m_Stitches.stitches[i].numVertices << endl;
+		Log::Info() << "m_Stitches.stitches[" << i << "].vertices=";
 		for (int j = 0; j < m_Stitches.stitches[i].numVertices; ++j)
 		{
 			if (j)
-				cout << ",";
-			cout << m_Stitches.stitches[i].vertices[j];
+				Log::Info() << ",";
+			Log::Info() << m_Stitches.stitches[i].vertices[j];
 		}
-		cout << endl;
+		Log::Info() << endl;
 	}
 }
 
@@ -670,29 +668,29 @@ void CBone::Render()
 
 void CBone::Print()
 {
-	cout << "BONE #" << id << endl;
-	cout << "name=" << name << endl;
+	Log::Info() << "BONE #" << id << endl;
+	Log::Info() << "name=" << name << endl;
 	if (m_pParent)
-		cout << "m_pParent=" << m_pParent->id << endl;
+		Log::Info() << "m_pParent=" << m_pParent->id << endl;
 	if (m_pSibling)
-		cout << "m_pSibling=" << m_pSibling->id << endl;
+		Log::Info() << "m_pSibling=" << m_pSibling->id << endl;
 	if (m_pChild)
-		cout << "m_pChild=" << m_pChild->id << endl;
-	cout << "inverseRotation=(" << inverseRotation.w << "," << inverseRotation.x << "," << inverseRotation.y
+		Log::Info() << "m_pChild=" << m_pChild->id << endl;
+	Log::Info() << "inverseRotation=(" << inverseRotation.w << "," << inverseRotation.x << "," << inverseRotation.y
 		<< "," << inverseRotation.z << ")" << endl;
-	cout << "inverseTranslation=(" << inverseTranslation.x << "," << inverseTranslation.y
+	Log::Info() << "inverseTranslation=(" << inverseTranslation.x << "," << inverseTranslation.y
 		<< "," << inverseTranslation.z << ")" << endl;
-	cout << "localRotation=(" << localRotation.w << "," << localRotation.x << "," << localRotation.y
+	Log::Info() << "localRotation=(" << localRotation.w << "," << localRotation.x << "," << localRotation.y
 		<< "," << localRotation.z << ")" << endl;
-	cout << "localTranslation=(" << localTranslation.x << "," << localTranslation.y
+	Log::Info() << "localTranslation=(" << localTranslation.x << "," << localTranslation.y
 		<< "," << localTranslation.z << ")" << endl;
-	cout << "m_localMatrix=" << m_localMatrix[0] << "," << m_localMatrix[4] << "," << m_localMatrix[8]
+	Log::Info() << "m_localMatrix=" << m_localMatrix[0] << "," << m_localMatrix[4] << "," << m_localMatrix[8]
 		<< "," << m_localMatrix[12] << endl;
-	cout << "              " << m_localMatrix[1] << "," << m_localMatrix[5] << "," << m_localMatrix[9]
+	Log::Info() << "              " << m_localMatrix[1] << "," << m_localMatrix[5] << "," << m_localMatrix[9]
 		<< "," << m_localMatrix[13] << endl;
-	cout << "              " << m_localMatrix[2] << "," << m_localMatrix[6] << "," << m_localMatrix[10]
+	Log::Info() << "              " << m_localMatrix[2] << "," << m_localMatrix[6] << "," << m_localMatrix[10]
 		<< "," << m_localMatrix[14] << endl;
-	cout << "              " << m_localMatrix[3] << "," << m_localMatrix[7] << "," << m_localMatrix[11]
+	Log::Info() << "              " << m_localMatrix[3] << "," << m_localMatrix[7] << "," << m_localMatrix[11]
 		<< "," << m_localMatrix[15] << endl;
 }
 
@@ -744,7 +742,7 @@ bool CASPModel::Load(const char* filename)
 
 	if (!pFile)
 	{
-		cerr << "Couldn't open file: " << filename << endl;
+		Log::Error() << "Couldn't open file: " << filename << endl;
 		return false;
 	}
 
@@ -752,10 +750,10 @@ bool CASPModel::Load(const char* filename)
 	char type[5];
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
-	//cout << "type=" << type << endl;
+	//Log::Info() << "type=" << type << endl;
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 
 	fread(&m_header.sizeTextField, sizeof(int), 1, pFile);
 	fread(&m_header.numBones, sizeof(int), 1, pFile);
@@ -769,10 +767,10 @@ bool CASPModel::Load(const char* filename)
 	// read bones
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
-	//cout << "type=" << type << endl;
+	//Log::Info() << "type=" << type << endl;
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 
 	m_pMeshBones = new bonh_t[m_header.numBones];
 	for (int i = 0; i < m_header.numBones; ++i)
@@ -792,10 +790,10 @@ bool CASPModel::Load(const char* filename)
 	// read rpos
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
-	//cout << "type=" << type << endl;
+	//Log::Info() << "type=" << type << endl;
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_BoneInfo.numBones, sizeof(int), 1, pFile);
 	m_BoneInfo.positions = new position_t[m_BoneInfo.numBones];
 	fread(m_BoneInfo.positions, sizeof(position_t), m_BoneInfo.numBones, pFile);
@@ -828,16 +826,16 @@ bool CASPModel::Load(const char* filename)
 	// read bbox
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
-	//cout << "type=" << type << endl;
+	//Log::Info() << "type=" << type << endl;
 	fread(&version, sizeof(version_t), 1, pFile);
-	//cout << "version.major=" << (short)version.major << endl;
-	//cout << "version.minor=" << (short)version.minor << endl;
+	//Log::Info() << "version.major=" << (short)version.major << endl;
+	//Log::Info() << "version.minor=" << (short)version.minor << endl;
 	fread(&m_BoundingBox.unknown, sizeof(int), 1, pFile);
 
 	// read bend
 	fread(&type, sizeof(char), 4, pFile);
 	type[4] = '\0';
-	//cout << "type=" << type << endl;
+	//Log::Info() << "type=" << type << endl;
 
 	fclose(pFile);
 
@@ -851,59 +849,59 @@ bool CASPModel::Load(const char* filename)
 void CASPModel::Print()
 {
 	int i;
-	cout << "HEADER" << endl;
-	cout << "m_header.sizeTextField=" << m_header.sizeTextField << endl;
-	cout << "m_header.numBones=" << m_header.numBones << endl;
-	cout << "m_header.numMaterials=" << m_header.numMaterials << endl;
-	cout << "m_header.numVertices=" << m_header.numVertices << endl;
-	cout << "m_header.numSubmeshes=" << m_header.numSubmeshes << endl;
-	cout << "m_header.textField=";
-	//cout << "m_header.textField=" << m_header.textField << endl;
+	Log::Info() << "HEADER" << endl;
+	Log::Info() << "m_header.sizeTextField=" << m_header.sizeTextField << endl;
+	Log::Info() << "m_header.numBones=" << m_header.numBones << endl;
+	Log::Info() << "m_header.numMaterials=" << m_header.numMaterials << endl;
+	Log::Info() << "m_header.numVertices=" << m_header.numVertices << endl;
+	Log::Info() << "m_header.numSubmeshes=" << m_header.numSubmeshes << endl;
+	Log::Info() << "m_header.textField=";
+	//Log::Info() << "m_header.textField=" << m_header.textField << endl;
 	for (i = 0; i < m_header.sizeTextField; ++i)
-		cout << m_header.textField[i];
-	cout << endl;
+		Log::Info() << m_header.textField[i];
+	Log::Info() << endl;
 
-	cout << "BONES" << endl;
+	Log::Info() << "BONES" << endl;
 	for (i = 0; i < m_header.numBones; ++i)
 	{
-		cout << "name=" << &m_header.textField[m_pMeshBones[i].nameOffset] << endl;
-		cout << "m_pMeshBones[" << i << "].index=" << m_pMeshBones[i].index << endl;
-		cout << "m_pMeshBones[" << i << "].parentIndex=" << m_pMeshBones[i].parentIndex << endl;
-		cout << "m_pMeshBones[" << i << "].nameOffset=" << m_pMeshBones[i].nameOffset << endl;
+		Log::Info() << "name=" << &m_header.textField[m_pMeshBones[i].nameOffset] << endl;
+		Log::Info() << "m_pMeshBones[" << i << "].index=" << m_pMeshBones[i].index << endl;
+		Log::Info() << "m_pMeshBones[" << i << "].parentIndex=" << m_pMeshBones[i].parentIndex << endl;
+		Log::Info() << "m_pMeshBones[" << i << "].nameOffset=" << m_pMeshBones[i].nameOffset << endl;
 	}
 
 	for (i = 0; i < m_header.numSubmeshes; ++i)
 	{
-		cout << "SUBMESH #" << i << endl;
+		Log::Info() << "SUBMESH #" << i << endl;
 		m_pSubMesh[i].Print();
 	}
 
-	cout << "BONE INFO" << endl;
-	cout << "m_BoneInfo.numBones=" << m_BoneInfo.numBones << endl;
+	Log::Info() << "BONE INFO" << endl;
+	Log::Info() << "m_BoneInfo.numBones=" << m_BoneInfo.numBones << endl;
 	for (i = 0; i < m_BoneInfo.numBones; ++i)
 	{
-		cout << "m_BoneInfo.positions[" << i << "].inverseRotation=("
+		Log::Info() << "m_BoneInfo.positions[" << i << "].inverseRotation=("
 			<< m_BoneInfo.positions[i].inverseRotation.w << ","
 			<< m_BoneInfo.positions[i].inverseRotation.x << ","
 			<< m_BoneInfo.positions[i].inverseRotation.y << ","
 			<< m_BoneInfo.positions[i].inverseRotation.z << ")" << endl;
-		cout << "m_BoneInfo.positions[" << i << "].inverseTranslation=("
+		Log::Info() << "m_BoneInfo.positions[" << i << "].inverseTranslation=("
 			<< m_BoneInfo.positions[i].inverseTranslation.x << ","
 			<< m_BoneInfo.positions[i].inverseTranslation.y << ","
 			<< m_BoneInfo.positions[i].inverseTranslation.z << ")" << endl;
-		cout << "m_BoneInfo.positions[" << i << "].localRotation=("
+		Log::Info() << "m_BoneInfo.positions[" << i << "].localRotation=("
 			<< m_BoneInfo.positions[i].localRotation.w << ","
 			<< m_BoneInfo.positions[i].localRotation.x << ","
 			<< m_BoneInfo.positions[i].localRotation.y << ","
 			<< m_BoneInfo.positions[i].localRotation.z << ")" << endl;
-		cout << "m_BoneInfo.positions[" << i << "].localTranslation=("
+		Log::Info() << "m_BoneInfo.positions[" << i << "].localTranslation=("
 			<< m_BoneInfo.positions[i].localTranslation.x << ","
 			<< m_BoneInfo.positions[i].localTranslation.y << ","
 			<< m_BoneInfo.positions[i].localTranslation.z << ")" << endl;
 	}
 
-	cout << "BOUNDING BOX" << endl;
-	cout << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << endl;
+	Log::Info() << "BOUNDING BOX" << endl;
+	Log::Info() << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << endl;
 }
 
 void CASPModel::LoadTextures()
@@ -956,7 +954,7 @@ void CASPModel::Update(long deltaTime)
 {
 	long duration = m_Anim.m_Anim.duration * 1000;
 	float delta = (deltaTime % duration) / (float)duration;
-	//cout << "delta=" << delta << endl;
+	//Log::Info() << "delta=" << delta << endl;
 	// push modelview matrix onto stack
 	glPushMatrix();
 

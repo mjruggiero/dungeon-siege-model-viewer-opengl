@@ -12,6 +12,7 @@
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\aspfile.h" />
+    <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\math.h" />
     <ClInclude Include="src\model.h" />
     <ClInclude Include="src\prsfile.h" />
@@ -20,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math.cpp" />
     <ClCompile Include="src\model.cpp" />

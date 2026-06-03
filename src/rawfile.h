@@ -1,6 +1,4 @@
-
-#ifndef _RAWFILE_H_
-#define _RAWFILE_H_
+#pragma once
 
 #include <string.h>
 
@@ -14,6 +12,4 @@ typedef struct
 	short height;
 } rawheader_t;
 
-char *LoadRawFile(const char *filename, int &width, int &height);
-
-#endif // _RAWFILE_H_
+char* LoadRawFile(const char* filename, int& width, int& height);

@@ -1,6 +1,6 @@
 // rawfile.cpp
 
-#include <iostream>
+#include "Log.h"
 #include <stdio.h>
 #include "rawfile.h"
 using namespace std;
@@ -15,7 +15,7 @@ char *LoadRawFile(const char *filename, int &width, int &height)
 	pFile = fopen(path, "rb");
 	if(!pFile)
 	{
-		cerr << "Couldn't find file: " << filename << endl;
+		Log::Error() << "Couldn't find file: " << filename << endl;
 		return NULL;	
 	}
 	

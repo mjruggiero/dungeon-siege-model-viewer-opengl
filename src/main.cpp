@@ -3,7 +3,6 @@
 //#include <gl/glut.h>
 #include <gl/freeglut.h>
 #include <stdio.h>
-#include <iostream>
 #include "model.h"
 #include "utilities.h"
 

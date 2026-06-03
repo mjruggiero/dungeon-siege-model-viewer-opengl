@@ -1,6 +1,4 @@
-
-#ifndef _ASPFILE_H_
-#define _ASPFILE_H_
+#pragma once
 
 #include "math.h"
 #include "rawfile.h"
@@ -22,7 +20,7 @@ typedef struct
 	int numVertices;
 	int numSubmeshes;
 	int unknown;
-	char *textField;
+	char* textField;
 } bmsh_t;
 
 typedef struct
@@ -50,13 +48,13 @@ typedef struct
 typedef struct
 {
 	int numMaterials;
-	material_t *materials;
+	material_t* materials;
 } bsmm_t;
 
 typedef struct
 {
 	int numVertices;
-	vector_t *vertices;
+	vector_t* vertices;
 } bvtx_t;
 
 typedef struct
@@ -71,7 +69,7 @@ typedef struct
 typedef struct
 {
 	int numCorners;
-	corner_t *corners;
+	corner_t* corners;
 } bcrn_t;
 
 typedef struct
@@ -93,18 +91,18 @@ typedef struct
 typedef struct
 {
 	int numCorners;
-	wcorner_t *corners;
+	wcorner_t* corners;
 } wcrn_t;
 
 typedef struct
 {
 	int numCorners;
-	int *cornerIndices;
+	int* cornerIndices;
 } vertexMap_t;
 
 typedef struct
 {
-	vertexMap_t *vertexMaps;
+	vertexMap_t* vertexMaps;
 } bvmp_t;
 
 typedef struct
@@ -117,8 +115,8 @@ typedef struct
 typedef struct
 {
 	int numFaces;
-	material_t *materials;
-	face_t *faces;
+	material_t* materials;
+	face_t* faces;
 } btri_t;
 
 typedef struct
@@ -130,39 +128,39 @@ typedef struct
 typedef struct
 {
 	int numVertices;
-	affectedVertex_t *vertices;
+	affectedVertex_t* vertices;
 } bone_t;
 
 typedef struct
 {
-	bone_t *bones;
+	bone_t* bones;
 } bvwl_t;
 
 typedef struct
 {
 	char token[4];
 	int numVertices;
-	int *vertices;
+	int* vertices;
 } stitch_t;
 
 typedef struct
 {
 	int numStitches;
-	stitch_t *stitches;
+	stitch_t* stitches;
 } stch_t;
 
 typedef struct
 {
 	quaternion_t inverseRotation;
-	vector_t inverseTranslation; 
+	vector_t inverseTranslation;
 	quaternion_t localRotation;
-	vector_t localTranslation; 
+	vector_t localTranslation;
 } position_t;
 
 typedef struct
 {
 	int numBones;
-	position_t *positions;
+	position_t* positions;
 } rpos_t;
 
 typedef struct
@@ -172,15 +170,13 @@ typedef struct
 
 typedef struct
 {
-	
+
 } bend_t;
 
 typedef struct
 {
 	int numInfos;
-	char *info;
+	char* info;
 } info_t;
 
 #pragma pack(pop)
-
-#endif // _ASPFILE_H_
