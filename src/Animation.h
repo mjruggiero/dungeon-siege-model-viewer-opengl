@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Math.h"
-#include "PrsFile.h"
+#include "PrsFormat.h"
 
-class ASPModel;
+class AspModel;
 
 class Animation
 {
@@ -14,7 +14,7 @@ public:
 	bool Load(const char* filename);
 	void Print();
 
-	friend class ASPModel;
+	friend class AspModel;
 
 private:
 	anim_t m_Anim;

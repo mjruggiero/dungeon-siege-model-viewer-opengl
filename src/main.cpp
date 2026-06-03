@@ -6,13 +6,13 @@
 #include <string>
 #include <utility>
 
+#include "AspModel.h"
 #include "Log.h"
 #include "NamingKey.h"
 #include "ResourceResolver.h"
 #include "ViewerConfig.h"
-#include "Model.h"
 
-ASPModel model;
+AspModel model;
 float angle = 0.0f;
 long startTime;
 

@@ -1,7 +1,7 @@
-#include "Model.h"
+#include "AspModel.h"
 
 #include "Log.h"
-#include "RawFile.h"
+#include "RawTextureFile.h"
 #include "SubMesh.h"
 
 #include <filesystem>
@@ -10,14 +10,14 @@
 
 extern bool bones;
 
-ASPModel::ASPModel()
+AspModel::AspModel()
 {
 	m_pBones = nullptr;
 	m_pSubMesh = nullptr;
 	m_BoneInfo.positions = nullptr;
 }
 
-ASPModel::~ASPModel()
+AspModel::~AspModel()
 {
 	if (m_pBones)
 		delete[] m_pBones;
@@ -29,7 +29,7 @@ ASPModel::~ASPModel()
 		delete[] m_BoneInfo.positions;
 }
 
-void ASPModel::Initialize(
+void AspModel::Initialize(
 	const char* basePath,
 	const char* modelPath,
 	const char* animationPath,
@@ -45,13 +45,13 @@ void ASPModel::Initialize(
 	m_useResourceResolver = false;
 }
 
-void ASPModel::Initialize(ResourceResolver resourceResolver)
+void AspModel::Initialize(ResourceResolver resourceResolver)
 {
 	m_resourceResolver = std::move(resourceResolver);
 	m_useResourceResolver = true;
 }
 
-bool ASPModel::Load(const char* filename)
+bool AspModel::Load(const char* filename)
 {
 	FILE* pFile;
 	version_t version;
@@ -183,7 +183,7 @@ bool ASPModel::Load(const char* filename)
 	return true;
 }
 
-void ASPModel::Print()
+void AspModel::Print()
 {
 	if (!Log::IsDebugEnabled())
 	{
@@ -246,7 +246,7 @@ void ASPModel::Print()
 	Log::Debug() << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << std::endl;
 }
 
-void ASPModel::LoadTextures()
+void AspModel::LoadTextures()
 {
 	int width, height;
 	int index = 0;
@@ -298,7 +298,7 @@ void ASPModel::LoadTextures()
 	}
 }
 
-void ASPModel::Render(int type)
+void AspModel::Render(int type)
 {
 	int i;
 
@@ -316,7 +316,7 @@ void ASPModel::Render(int type)
 	}
 }
 
-void ASPModel::Update(long deltaTime)
+void AspModel::Update(long deltaTime)
 {
 	long duration = m_Anim.m_Anim.duration * 1000;
 	float delta = (deltaTime % duration) / (float)duration;
@@ -342,7 +342,7 @@ void ASPModel::Update(long deltaTime)
 	}
 }
 
-void ASPModel::Interpolate(const float delta, Bone* pBone)
+void AspModel::Interpolate(const float delta, Bone* pBone)
 {
 	// push modelview matrix onto stack 
 	glPushMatrix();
@@ -452,7 +452,7 @@ void ASPModel::Interpolate(const float delta, Bone* pBone)
 		Interpolate(delta, pBone->m_pSibling);
 }
 
-bool ASPModel::LoadAnimation(const char* filename)
+bool AspModel::LoadAnimation(const char* filename)
 {
 	std::filesystem::path fullPath;
 
@@ -476,7 +476,7 @@ bool ASPModel::LoadAnimation(const char* filename)
 	return m_Anim.Load(fullPath.string().c_str());
 }
 
-void ASPModel::PrintBoneInfo()
+void AspModel::PrintBoneInfo()
 {
 	if (!Log::IsDebugEnabled())
 	{

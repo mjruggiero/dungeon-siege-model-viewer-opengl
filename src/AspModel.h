@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AspFile.h"
+#include "AspFormat.h"
 #include "Animation.h"
 #include "Bone.h"
 #include "ResourceResolver.h"
@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-class ASPModel
+class AspModel
 {
 public:
-	ASPModel();
-	~ASPModel();
+	AspModel();
+	~AspModel();
 
 	void Initialize(
 		const char* basePath,
