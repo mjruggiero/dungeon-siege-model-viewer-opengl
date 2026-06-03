@@ -31,6 +31,21 @@ namespace
 		g_application->Keyboard(key, x, y);
 	}
 
+	void MouseCallback(int button, int state, int x, int y)
+	{
+		g_application->Mouse(button, state, x, y);
+	}
+
+	void MotionCallback(int x, int y)
+	{
+		g_application->Motion(x, y);
+	}
+
+	void MouseWheelCallback(int wheel, int direction, int x, int y)
+	{
+		g_application->MouseWheel(wheel, direction, x, y);
+	}
+
 	void IdleCallback()
 	{
 		g_application->Idle();
@@ -47,9 +62,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(640, 480);
-
 	const int windowId = glutCreateWindow("Dungeon Siege ASP Model Viewer");
-
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	g_application = std::make_unique<ViewerApplication>();
@@ -58,11 +71,6 @@ int main(int argc, char** argv)
 	{
 		Log::Error() << "Failed to initialize viewer application." << std::endl;
 		g_application.reset();
-
-#ifdef _DEBUG
-		_CrtDumpMemoryLeaks();
-#endif
-
 		return EXIT_FAILURE;
 	}
 
@@ -70,11 +78,13 @@ int main(int argc, char** argv)
 	glutReshapeFunc(ReshapeCallback);
 	glutIdleFunc(IdleCallback);
 	glutKeyboardFunc(KeyboardCallback);
+	glutMouseFunc(MouseCallback);
+	glutMotionFunc(MotionCallback);
+	glutMouseWheelFunc(MouseWheelCallback);
 
 	glutMainLoop();
 
 	g_application.reset();
-
 	glutDestroyWindow(windowId);
 
 #ifdef _DEBUG

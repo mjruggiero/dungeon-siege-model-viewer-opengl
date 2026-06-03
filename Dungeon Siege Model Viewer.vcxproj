@@ -17,6 +17,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\NamingKey.cpp" />
+    <ClCompile Include="src\OrbitCamera.cpp" />
     <ClCompile Include="src\PropertiesFile.cpp" />
     <ClCompile Include="src\RawTextureFile.cpp" />
     <ClCompile Include="src\ResourceResolver.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\NamingKey.h" />
+    <ClInclude Include="src\OrbitCamera.h" />
     <ClInclude Include="src\PropertiesFile.h" />
     <ClInclude Include="src\PrsFormat.h" />
     <ClInclude Include="src\RawTextureFile.h" />

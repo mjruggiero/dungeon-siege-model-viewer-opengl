@@ -89,7 +89,7 @@ void ViewerApplication::Display()
 
 	glLoadIdentity();
 
-	glTranslatef(0.0f, -3.0f, -10.0f);
+	m_camera.ApplyViewTransform();
 	glRotatef(m_angle, 0.0f, 1.0f, 0.0f);
 
 	m_model.Render(GL_TRIANGLES, m_showBones);
@@ -141,6 +141,12 @@ void ViewerApplication::Keyboard(unsigned char key, int, int)
 		m_rotating = !m_rotating;
 		break;
 
+	case 'c':
+	case 'C':
+		m_camera.Reset();
+		m_angle = 0.0f;
+		break;
+
 	case 'l':
 	case 'L':
 		Log::SetDebugEnabled(!Log::IsDebugEnabled());
@@ -166,6 +172,42 @@ void ViewerApplication::Keyboard(unsigned char key, int, int)
 	default:
 		break;
 	}
+}
+
+void ViewerApplication::Mouse(int button, int state, int x, int y)
+{
+	// Some GLUT/freeglut builds report mouse wheel movement as buttons 3/4
+	// instead of invoking the dedicated mouse-wheel callback. Handle both.
+	if (state == GLUT_DOWN)
+	{
+		if (button == 3)
+		{
+			m_camera.ZoomSteps(1);
+			return;
+		}
+
+		if (button == 4)
+		{
+			m_camera.ZoomSteps(-1);
+			return;
+		}
+
+		m_camera.BeginMouseDrag(button, x, y);
+	}
+	else if (state == GLUT_UP)
+	{
+		m_camera.EndMouseDrag(button);
+	}
+}
+
+void ViewerApplication::Motion(int x, int y)
+{
+	m_camera.MouseMove(x, y);
+}
+
+void ViewerApplication::MouseWheel(int, int direction, int, int)
+{
+	m_camera.ZoomSteps(direction);
 }
 
 void ViewerApplication::Idle()

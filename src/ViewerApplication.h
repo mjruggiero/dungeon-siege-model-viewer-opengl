@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AspModel.h"
+#include "OrbitCamera.h"
 #include "ViewerConfig.h"
 
 #include <string>
@@ -13,6 +14,9 @@ public:
 	void Display();
 	void Reshape(int width, int height);
 	void Keyboard(unsigned char key, int x, int y);
+	void Mouse(int button, int state, int x, int y);
+	void Motion(int x, int y);
+	void MouseWheel(int wheel, int direction, int x, int y);
 	void Idle();
 
 private:
@@ -24,6 +28,7 @@ private:
 private:
 	ViewerConfig m_config{};
 	AspModel m_model{};
+	OrbitCamera m_camera{};
 
 	float m_angle{};
 	unsigned long long m_startTime{};
