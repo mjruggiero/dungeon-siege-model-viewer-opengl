@@ -1,12 +1,14 @@
 #pragma once
 
 #include <stdio.h>
+#include <filesystem>
 #include <string>
 #include <vector>
 
 #include <gl/freeglut.h>
 #include "aspfile.h"
 #include "Animation.h"
+#include "ResourceResolver.h"
 using namespace std;
 
 class CFileTreeNode
@@ -104,6 +106,7 @@ public:
 		const char* modelPath,
 		const char* animationPath,
 		const char* texturePath);
+	void Initialize(ResourceResolver resourceResolver);
 	bool Load(const char* filename);
 	bool LoadAnimation(const char* filename);
 	void Print();
@@ -132,5 +135,8 @@ private:
 	std::string m_strModelPath;
 	std::string m_strAnimationPath;
 	std::string m_strTexturePath;
+
+	ResourceResolver m_resourceResolver;
+	bool m_useResourceResolver{};
 
 };

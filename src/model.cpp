@@ -1,6 +1,11 @@
 #include "model.h"
 
 #include "Log.h"
+#include "rawfile.h"
+
+#include <filesystem>
+#include <string>
+#include <utility>
 
 extern bool bones;
 
@@ -711,7 +716,6 @@ CASPModel::CASPModel()
 	m_pBones = nullptr;
 	m_pSubMesh = nullptr;
 	m_BoneInfo.positions = nullptr;
-	m_pathTree.ParseNNKFile("namingkey101.nnk");
 }
 
 CASPModel::~CASPModel()
@@ -739,6 +743,13 @@ void CASPModel::Initialize(
 	m_strModelPath = strBasePath + modelPath;
 	m_strAnimationPath = strBasePath + animationPath;
 	m_strTexturePath = strBasePath + texturePath;
+	m_useResourceResolver = false;
+}
+
+void CASPModel::Initialize(ResourceResolver resourceResolver)
+{
+	m_resourceResolver = std::move(resourceResolver);
+	m_useResourceResolver = true;
 }
 
 bool CASPModel::Load(const char* filename)
@@ -746,15 +757,30 @@ bool CASPModel::Load(const char* filename)
 	FILE* pFile;
 	version_t version;
 
-	//char *fullname = m_pathTree.GetFilePath(filename);
+	std::filesystem::path fullPath;
 
-	std::string fullPath = m_strModelPath + filename;
+	if (m_useResourceResolver)
+	{
+		const auto resolvedPath = m_resourceResolver.ResolveAspModelPath(filename);
 
-	pFile = fopen(fullPath.c_str(), "rb");
+		if (!resolvedPath)
+		{
+			Log::Error() << "Couldn't resolve ASP model: " << filename << endl;
+			return false;
+		}
+
+		fullPath = *resolvedPath;
+	}
+	else
+	{
+		fullPath = std::filesystem::path{ m_strModelPath } / filename;
+	}
+
+	pFile = fopen(fullPath.string().c_str(), "rb");
 
 	if (!pFile)
 	{
-		Log::Error() << "Couldn't open file: " << filename << endl;
+		Log::Error() << "Couldn't open ASP model: " << fullPath.string() << endl;
 		return false;
 	}
 
@@ -924,20 +950,44 @@ void CASPModel::Print()
 void CASPModel::LoadTextures()
 {
 	int width, height;
-	char filename[256];
 	int index = 0;
 
-	// lead each texture for each material
+	// Load each texture for each material.
 	for (int i = 0; i < m_header.numMaterials; ++i)
 	{
-		strcpy(filename, &m_header.textField[index]);
-		// this increments on dword boundaries
-		index += strlen(filename) + (4 - strlen(filename) % 4);
-		strcat(filename, ".raw");
+		const std::string textureName = &m_header.textField[index];
 
-		std::string fullPath = m_strTexturePath + filename;
+		// Texture names in the ASP text field are padded to dword boundaries.
+		index += static_cast<int>(textureName.length()) +
+			(4 - static_cast<int>(textureName.length()) % 4);
 
-		char* buffer = LoadRawFile(fullPath.c_str(), width, height);
+		std::filesystem::path fullPath;
+
+		if (m_useResourceResolver)
+		{
+			const auto resolvedPath = m_resourceResolver.ResolveRawTexturePath(textureName);
+
+			if (!resolvedPath)
+			{
+				Log::Warning() << "Skipping unresolved RAW texture: " << textureName << endl;
+				continue;
+			}
+
+			fullPath = *resolvedPath;
+		}
+		else
+		{
+			fullPath = std::filesystem::path{ m_strTexturePath } / (textureName + ".raw");
+		}
+
+		char* buffer = LoadRawFile(fullPath.string().c_str(), width, height);
+
+		if (buffer == nullptr)
+		{
+			Log::Warning() << "Skipping RAW texture that failed to load: "
+				<< fullPath.string() << endl;
+			continue;
+		}
 
 		glGenTextures(1, &tex[i]);
 		glBindTexture(GL_TEXTURE_2D, tex[i]);
@@ -1105,8 +1155,26 @@ void CASPModel::Interpolate(const float delta, CBone* pBone)
 
 bool CASPModel::LoadAnimation(const char* filename)
 {
-	std::string fullPath = m_strAnimationPath + filename;
-	return m_Anim.Load(fullPath.c_str());
+	std::filesystem::path fullPath;
+
+	if (m_useResourceResolver)
+	{
+		const auto resolvedPath = m_resourceResolver.ResolvePrsAnimationPath(filename);
+
+		if (!resolvedPath)
+		{
+			Log::Error() << "Couldn't resolve PRS animation: " << filename << endl;
+			return false;
+		}
+
+		fullPath = *resolvedPath;
+	}
+	else
+	{
+		fullPath = std::filesystem::path{ m_strAnimationPath } / filename;
+	}
+
+	return m_Anim.Load(fullPath.string().c_str());
 }
 
 void CASPModel::PrintBoneInfo()

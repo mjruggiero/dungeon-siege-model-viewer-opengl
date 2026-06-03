@@ -1,22 +1,65 @@
-
 #include <windows.h>
-//#include <gl/glut.h>
 #include <gl/freeglut.h>
-#include <stdio.h>
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+#include <utility>
+
+#include "Log.h"
+#include "NamingKey.h"
+#include "ResourceResolver.h"
+#include "ViewerConfig.h"
 #include "model.h"
 #include "utilities.h"
-#include "Log.h"
 
 CASPModel model;
 float angle = 0.0f;
 long startTime;
 
-const char* path = "D:/Dungeon Siege/Objects/art/";
-
 bool mode = 0;
 bool bones = 0;
 bool my_rotate = 0;
 bool pause = 0;
+
+namespace
+{
+	constexpr const char* kConfigPath = "viewer.ini";
+
+	ViewerConfig g_config{};
+
+	ResourceResolver BuildResourceResolver(const ViewerConfig& config)
+	{
+		ResourceResolver resolver{};
+		resolver.SetContentBasePath(config.contentBasePath);
+		resolver.SetArtBasePath(config.artBasePath);
+		resolver.SetModelFallbackBasePath(config.modelFallbackBasePath);
+		resolver.SetAnimationFallbackBasePath(config.animationFallbackBasePath);
+		resolver.SetTextureFallbackBasePath(config.textureFallbackBasePath);
+
+		if (!config.namingKeyPath.empty())
+		{
+			NamingKey namingKey = NamingKey::LoadFromFile(config.namingKeyPath);
+
+			if (namingKey.IsLoaded())
+			{
+				Log::Info() << "Loaded NamingKey: " << config.namingKeyPath.string() << std::endl;
+				resolver.SetNamingKey(std::move(namingKey));
+			}
+			else
+			{
+				Log::Warning() << "Unable to load NamingKey: "
+					<< config.namingKeyPath.string() << std::endl;
+			}
+		}
+		else
+		{
+			Log::Warning() << "No NamingKeyPath configured." << std::endl;
+		}
+
+		return resolver;
+	}
+}
 
 void init()
 {
@@ -25,44 +68,33 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
-	const char* basePath = "D:/data/dungeon-siege/art/";
+	g_config = ViewerConfig::LoadFromFile(kConfigPath);
 
-	const char* modelPath = "meshes/characters/evil_b_bosses/dragon/";
-	const char* animationPath = "animations/characters/evil_b_bosses/dragon/fs0/";
-	const char* texturePath = "bitmaps/characters/evil_b_bosses/";
+	Log::SetDebugEnabled(g_config.enableDebugLogging);
+	mode = g_config.startWireframe;
+	pause = g_config.startPaused;
+	my_rotate = g_config.startRotating;
 
-	//const char* modelPath = "meshes/characters/evil_d_monsters/drake/";
-	//const char* animationPath = "animations/characters/evil_d_monsters/drake/fs0/";
-	//const char* texturePath = "bitmaps/characters/evil_d_monsters/";
+	if (mode)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	model.Initialize(basePath, modelPath, animationPath, texturePath);
+	Log::Info() << "Using config file: " << kConfigPath << std::endl;
+	Log::Info() << "Configured model: " << g_config.modelName << std::endl;
+	Log::Info() << "Configured animation: " << g_config.animationName << std::endl;
 
-	// drake
-	if (!model.Load("m_c_ebb_dg_pos_1.asp"))
+	model.Initialize(BuildResourceResolver(g_config));
+
+	if (!model.Load(g_config.modelName.c_str()))
+	{
 		exit(0);
+	}
 
-	model.LoadAnimation("a_c_ebb_dg_fs0_at.prs"); // attacking with breath
-	//model.LoadAnimation("a_c_edm_dk_fs0_fl.prs"); // flying
-	//model.LoadAnimation("a_c_edm_dk_fs0_ds.prs"); // standing
-
-	// mucosa
-	//model.Load("data/m_c_edm_mu_pos_1.asp");
-	//model.LoadAnimation("data/a_c_edm_mu_fs0_dfs.prs");
-
-	// hero male
-	//model.Load("data/m_c_gah_fb_pos_a2.asp");
-	//model.LoadAnimation("data/a_c_gah_fb_fs0_at.prs"); // punching
-	//model.LoadAnimation("data/a_c_gah_fb_fs0_ds.prs"); // standing pose
-
-	// hero female
-	//model.Load("data/m_c_gah_fg_pos_a1.asp");
-	//model.LoadAnimation("data/a_c_gah_fg_fs0_at.prs");
-
-	// synge
-	//model.Load("m_c_edm_sy_pos_1.asp");
-	//model.LoadAnimation("a_c_edm_sy_fs0_at.prs");
-
-	//model.m_Anim.Print();
+	if (!g_config.animationName.empty())
+	{
+		model.LoadAnimation(g_config.animationName.c_str());
+	}
 
 	startTime = GetTickCount();
 }

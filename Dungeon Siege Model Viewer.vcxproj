@@ -15,9 +15,13 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\math.h" />
     <ClInclude Include="src\model.h" />
+    <ClInclude Include="src\NamingKey.h" />
+    <ClInclude Include="src\PropertiesFile.h" />
     <ClInclude Include="src\prsfile.h" />
     <ClInclude Include="src\rawfile.h" />
+    <ClInclude Include="src\ResourceResolver.h" />
     <ClInclude Include="src\utilities.h" />
+    <ClInclude Include="src\ViewerConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
@@ -25,13 +29,18 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math.cpp" />
     <ClCompile Include="src\model.cpp" />
+    <ClCompile Include="src\NamingKey.cpp" />
+    <ClCompile Include="src\PropertiesFile.cpp" />
     <ClCompile Include="src\rawfile.cpp" />
+    <ClCompile Include="src\ResourceResolver.cpp" />
+    <ClCompile Include="src\ViewerConfig.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <SccProjectName />
     <SccLocalPath />
     <ProjectGuid>{9C774047-EA18-4423-9EF3-CC1095BE5BD9}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -84,6 +93,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/freeglut/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <OutputFile>.\Debug/Dungeon Siege Model Viewer.exe</OutputFile>
