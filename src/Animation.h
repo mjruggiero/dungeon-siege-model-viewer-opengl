@@ -17,6 +17,9 @@ public:
 	friend class AspModel;
 
 private:
+	void Clear();
+
+private:
 	anim_t m_Anim;
 	note_t m_Notes;
 	trcr_t m_Trcr;

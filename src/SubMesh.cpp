@@ -9,6 +9,7 @@ SubMesh::SubMesh()
 	m_Material.materials = nullptr;
 	m_Vertex.vertices = nullptr;
 	m_Corner.corners = nullptr;
+	m_Vertices = nullptr;
 	m_CornerExtended.corners = nullptr;
 	m_VertexMapping.vertexMaps = nullptr;
 	m_Face.materials = nullptr;
@@ -27,6 +28,9 @@ SubMesh::~SubMesh()
 
 	if (m_Corner.corners)
 		delete[] m_Corner.corners;
+
+	if (m_Vertices)
+		delete[]m_Vertices;
 
 	if (m_CornerExtended.corners)
 		delete[] m_CornerExtended.corners;

@@ -7,25 +7,55 @@
 #include <cstdio>
 #include <cstring>
 
-Animation::Animation()
-{
-	m_Keys = nullptr;
-}
+Animation::Animation() = default;
 
 Animation::~Animation()
 {
-	if (m_Anim.textField)
-		delete[] m_Anim.textField;
+	Clear();
+}
 
-	if (m_Notes.notes)
-		delete[] m_Notes.notes;
+void Animation::Clear()
+{
+	delete[] m_Anim.textField;
+	m_Anim.textField = nullptr;
 
-	if (m_Keys)
+	delete[] m_Notes.notes;
+	m_Notes.notes = nullptr;
+
+	delete[] m_Trcr.items;
+	m_Trcr.items = nullptr;
+
+	delete[] m_GlobalKeys.keyframes.rotations;
+	m_GlobalKeys.keyframes.rotations = nullptr;
+
+	delete[] m_GlobalKeys.keyframes.positions;
+	m_GlobalKeys.keyframes.positions = nullptr;
+
+	if (m_Keys != nullptr)
+	{
+		for (int i = 0; i < m_Anim.numBones; ++i)
+		{
+			delete[] m_Keys[i].keyframes.rotations;
+			m_Keys[i].keyframes.rotations = nullptr;
+
+			delete[] m_Keys[i].keyframes.positions;
+			m_Keys[i].keyframes.positions = nullptr;
+		}
+
 		delete[] m_Keys;
+		m_Keys = nullptr;
+	}
+
+	m_Anim = {};
+	m_Notes = {};
+	m_Trcr = {};
+	m_GlobalKeys = {};
 }
 
 bool Animation::Load(const char* filename)
 {
+	Clear();
+
 	FILE* pFile;
 	int i;
 	version_t version;
@@ -116,6 +146,7 @@ bool Animation::Load(const char* filename)
 		fread(m_Keys[i].keyframes.positions, sizeof(positionKey_t), m_Keys[i].keyframes.numPositions, pFile);
 	}
 
+	fclose(pFile);
 	return true;
 }
 

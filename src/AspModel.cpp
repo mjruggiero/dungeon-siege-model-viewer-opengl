@@ -17,6 +17,12 @@ AspModel::AspModel()
 
 AspModel::~AspModel()
 {
+	if (m_header.textField)
+		delete[]m_header.textField;
+
+	if (m_pMeshBones)
+		delete[] m_pMeshBones;
+
 	if (m_pBones)
 		delete[] m_pBones;
 

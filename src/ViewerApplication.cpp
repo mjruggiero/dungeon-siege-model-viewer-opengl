@@ -160,6 +160,9 @@ void ViewerApplication::Keyboard(unsigned char key, int, int)
 	}
 
 	case 27:
+#ifdef _DEBUG
+		_CrtDumpMemoryLeaks();
+#endif
 		std::exit(0);
 		break;
 

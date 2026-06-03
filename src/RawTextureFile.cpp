@@ -20,9 +20,16 @@ char* LoadRawFile(const char* filename, int& width, int& height)
 	height = header.height;
 
 	if (strncmp(header.magic, "ipaR", 4) != 0)
+	{
+		fclose(pFile);
 		return nullptr;
+	}
+
 	if (header.format != '8888')
+	{
+		fclose(pFile);
 		return nullptr;
+	}
 
 	char* buffer = new char[header.width * header.height * 4];
 
