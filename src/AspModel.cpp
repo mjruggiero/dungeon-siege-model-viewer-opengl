@@ -8,8 +8,6 @@
 #include <string>
 #include <utility>
 
-extern bool bones;
-
 AspModel::AspModel()
 {
 	m_pBones = nullptr;
@@ -298,7 +296,7 @@ void AspModel::LoadTextures()
 	}
 }
 
-void AspModel::Render(int type)
+void AspModel::Render(int type, bool showBones)
 {
 	int i;
 
@@ -307,7 +305,7 @@ void AspModel::Render(int type)
 		m_pSubMesh[i].Render(type);
 
 	// render bones
-	if (bones)
+	if (showBones)
 	{
 		glDisable(GL_TEXTURE_2D);
 		m_pBones[0].Render();

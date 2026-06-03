@@ -28,7 +28,7 @@ public:
 	bool LoadAnimation(const char* filename);
 	void Print();
 	void LoadTextures();
-	void Render(int type);
+	void Render(int type, bool showBones);
 	void Update(long deltaTime);
 	void Interpolate(const float delta, Bone* pBone);
 	void PrintBoneInfo();

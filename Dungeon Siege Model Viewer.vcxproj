@@ -21,6 +21,7 @@
     <ClCompile Include="src\RawTextureFile.cpp" />
     <ClCompile Include="src\ResourceResolver.cpp" />
     <ClCompile Include="src\SubMesh.cpp" />
+    <ClCompile Include="src\ViewerApplication.cpp" />
     <ClCompile Include="src\ViewerConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     <ClInclude Include="src\RawTextureFile.h" />
     <ClInclude Include="src\ResourceResolver.h" />
     <ClInclude Include="src\SubMesh.h" />
+    <ClInclude Include="src\ViewerApplication.h" />
     <ClInclude Include="src\ViewerConfig.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
