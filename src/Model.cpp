@@ -1,7 +1,7 @@
-#include "model.h"
+#include "Model.h"
 
 #include "Log.h"
-#include "rawfile.h"
+#include "RawFile.h"
 
 #include <filesystem>
 #include <string>

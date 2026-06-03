@@ -10,8 +10,8 @@
 #include "NamingKey.h"
 #include "ResourceResolver.h"
 #include "ViewerConfig.h"
-#include "model.h"
-#include "utilities.h"
+#include "Model.h"
+#include "Utilities.h"
 
 CASPModel model;
 float angle = 0.0f;

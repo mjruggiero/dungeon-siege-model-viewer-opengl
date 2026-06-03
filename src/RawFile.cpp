@@ -1,4 +1,4 @@
-#include "rawfile.h"
+#include "RawFile.h"
 
 #include "Log.h"
 

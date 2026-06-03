@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math.h"
-#include "rawfile.h"
+#include "Math.h"
+#include "RawFile.h"
 
 #pragma pack(push,1)
 

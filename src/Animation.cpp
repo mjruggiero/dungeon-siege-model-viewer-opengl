@@ -1,8 +1,8 @@
 #include "Animation.h"
 #include "Log.h"
 
-#include "aspfile.h"
-#include "prsfile.h"
+#include "AspFile.h"
+#include "PrsFile.h"
 
 #include <cstdio>
 #include <cstring>

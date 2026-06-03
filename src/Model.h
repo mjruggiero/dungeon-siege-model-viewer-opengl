@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <gl/freeglut.h>
-#include "aspfile.h"
+#include "AspFile.h"
 #include "Animation.h"
 #include "ResourceResolver.h"
 

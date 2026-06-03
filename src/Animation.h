@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math.h"
-#include "prsfile.h"
+#include "Math.h"
+#include "PrsFile.h"
 
 class CASPModel;
 
