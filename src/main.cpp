@@ -24,7 +24,7 @@ bool pause = 0;
 
 namespace
 {
-	constexpr const char* kConfigPath = "viewer.ini";
+	constexpr const char* kConfigPath = "config/viewer.properties";
 
 	ViewerConfig g_config{};
 

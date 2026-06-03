@@ -2,59 +2,108 @@
 
 #include "PropertiesFile.h"
 
+namespace
+{
+    std::string GetStringOrLegacy(
+        const PropertiesFile& properties,
+        const std::string& propertyKey,
+        const std::string& legacyKey,
+        const std::string& defaultValue)
+    {
+        return properties.GetString(
+            propertyKey,
+            properties.GetString(legacyKey, defaultValue));
+    }
+
+    bool GetBoolOrLegacy(
+        const PropertiesFile& properties,
+        const std::string& propertyKey,
+        const std::string& legacyKey,
+        const bool defaultValue)
+    {
+        return properties.GetBool(
+            propertyKey,
+            properties.GetBool(legacyKey, defaultValue));
+    }
+}
+
 ViewerConfig ViewerConfig::LoadFromFile(const std::filesystem::path& path)
 {
     const PropertiesFile properties = PropertiesFile::LoadFromFile(path);
 
     ViewerConfig config{};
 
-    config.contentBasePath = properties.GetString(
+    config.contentBasePath = GetStringOrLegacy(
+        properties,
+        "dungeonSiege.dataRoot",
         "DungeonSiege.DataRoot",
-        properties.GetString("content.basePath", config.contentBasePath.string()));
+        config.contentBasePath.string());
 
-    config.artBasePath = properties.GetString(
+    config.artBasePath = GetStringOrLegacy(
+        properties,
+        "dungeonSiege.artRoot",
         "DungeonSiege.ArtRoot",
-        properties.GetString("art.basePath", config.artBasePath.string()));
+        config.artBasePath.string());
 
-    config.namingKeyPath = properties.GetString(
+    config.namingKeyPath = GetStringOrLegacy(
+        properties,
+        "dungeonSiege.namingKeyPath",
         "DungeonSiege.NamingKeyPath",
-        properties.GetString("namingKey.path", config.namingKeyPath.string()));
+        config.namingKeyPath.string());
 
-    config.modelFallbackBasePath = properties.GetString(
+    config.modelFallbackBasePath = GetStringOrLegacy(
+        properties,
+        "resources.modelBasePath",
         "Resources.ModelBasePath",
-        properties.GetString("model.basePath", (config.artBasePath / "meshes").string()));
+        (config.artBasePath / "meshes").string());
 
-    config.animationFallbackBasePath = properties.GetString(
+    config.animationFallbackBasePath = GetStringOrLegacy(
+        properties,
+        "resources.animationBasePath",
         "Resources.AnimationBasePath",
-        properties.GetString("animation.basePath", (config.artBasePath / "animations").string()));
+        (config.artBasePath / "animations").string());
 
-    config.textureFallbackBasePath = properties.GetString(
+    config.textureFallbackBasePath = GetStringOrLegacy(
+        properties,
+        "resources.textureBasePath",
         "Resources.TextureBasePath",
-        properties.GetString("texture.basePath", (config.artBasePath / "bitmaps").string()));
+        (config.artBasePath / "bitmaps").string());
 
-    config.modelName = properties.GetString(
+    config.modelName = GetStringOrLegacy(
+        properties,
+        "viewer.model",
         "Viewer.Model",
-        properties.GetString("model.name", config.modelName));
+        config.modelName);
 
-    config.animationName = properties.GetString(
+    config.animationName = GetStringOrLegacy(
+        properties,
+        "viewer.animation",
         "Viewer.Animation",
-        properties.GetString("animation.name", config.animationName));
+        config.animationName);
 
-    config.enableDebugLogging = properties.GetBool(
+    config.enableDebugLogging = GetBoolOrLegacy(
+        properties,
+        "viewer.debugLogging",
         "Viewer.DebugLogging",
-        properties.GetBool("debug.enabled", config.enableDebugLogging));
+        config.enableDebugLogging);
 
-    config.startWireframe = properties.GetBool(
+    config.startWireframe = GetBoolOrLegacy(
+        properties,
+        "viewer.startWireframe",
         "Viewer.StartWireframe",
-        properties.GetBool("render.startWireframe", config.startWireframe));
+        config.startWireframe);
 
-    config.startPaused = properties.GetBool(
+    config.startPaused = GetBoolOrLegacy(
+        properties,
+        "viewer.startPaused",
         "Viewer.StartPaused",
-        properties.GetBool("animation.startPaused", config.startPaused));
+        config.startPaused);
 
-    config.startRotating = properties.GetBool(
+    config.startRotating = GetBoolOrLegacy(
+        properties,
+        "viewer.startRotating",
         "Viewer.StartRotating",
-        properties.GetBool("camera.startRotating", config.startRotating));
+        config.startRotating);
 
     return config;
 }

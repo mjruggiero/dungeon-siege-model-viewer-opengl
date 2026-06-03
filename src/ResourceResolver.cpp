@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cctype>
 #include <filesystem>
+#include <optional>
 #include <utility>
 
 #include "Log.h"
@@ -27,6 +28,42 @@ namespace
     {
         return ToLower(path.extension().string()) == ToLower(expectedExtension);
     }
+
+    std::optional<std::string> ExtractAnimationSetFolder(const std::string& animationName)
+    {
+        const std::string lowerName = ToLower(animationName);
+        std::size_t searchPosition = 0;
+
+        while (searchPosition < lowerName.size())
+        {
+            const std::size_t found = lowerName.find("_fs", searchPosition);
+
+            if (found == std::string::npos)
+            {
+                return std::nullopt;
+            }
+
+            const std::size_t tokenStart = found + 1;
+            std::size_t tokenEnd = lowerName.find('_', tokenStart);
+
+            if (tokenEnd == std::string::npos)
+            {
+                tokenEnd = lowerName.size();
+            }
+
+            const std::string token = lowerName.substr(tokenStart, tokenEnd - tokenStart);
+
+            if (token.size() >= 3 && token[0] == 'f' && token[1] == 's')
+            {
+                return token;
+            }
+
+            searchPosition = tokenEnd;
+        }
+
+        return std::nullopt;
+    }
+
 }
 
 void ResourceResolver::SetContentBasePath(std::filesystem::path contentBasePath)
@@ -73,7 +110,84 @@ std::optional<std::filesystem::path> ResourceResolver::ResolveAspModelPath(
 std::optional<std::filesystem::path> ResourceResolver::ResolvePrsAnimationPath(
     const std::string& animationName) const
 {
-    return ResolveResourcePath(animationName, ".prs", "PRS animation", m_animationFallbackBasePath, true);
+    if (animationName.empty())
+    {
+        return std::nullopt;
+    }
+
+    Log::Info() << "Resolving PRS animation: " << animationName << std::endl;
+
+    const std::optional<std::string> animationSetFolder =
+        ExtractAnimationSetFolder(animationName);
+
+    std::vector<std::filesystem::path> candidates;
+
+    if (m_namingKey.IsLoaded())
+    {
+        const std::optional<std::filesystem::path> resolvedRelativePath =
+            m_namingKey.ResolveResourceName(animationName);
+
+        if (resolvedRelativePath)
+        {
+            Log::Info() << "NamingKey resolved " << animationName << " -> "
+                << resolvedRelativePath->string() << std::endl;
+
+            const std::vector<std::filesystem::path> namingKeyCandidates =
+                BuildNamingKeyCandidates(*resolvedRelativePath, m_animationFallbackBasePath);
+
+            candidates.insert(
+                candidates.end(),
+                namingKeyCandidates.begin(),
+                namingKeyCandidates.end());
+
+            if (animationSetFolder)
+            {
+                const std::filesystem::path parentPath = resolvedRelativePath->parent_path();
+                const std::filesystem::path fileName = resolvedRelativePath->filename();
+                const std::filesystem::path resolvedWithAnimationSet =
+                    parentPath / *animationSetFolder / fileName;
+
+                const std::vector<std::filesystem::path> animationSetCandidates =
+                    BuildNamingKeyCandidates(resolvedWithAnimationSet, m_animationFallbackBasePath);
+
+                candidates.insert(
+                    candidates.end(),
+                    animationSetCandidates.begin(),
+                    animationSetCandidates.end());
+            }
+        }
+        else
+        {
+            Log::Warning() << "NamingKey could not resolve: " << animationName << std::endl;
+        }
+    }
+    else
+    {
+        Log::Warning() << "NamingKey is not loaded." << std::endl;
+    }
+
+    const std::vector<std::filesystem::path> directCandidates =
+        BuildDirectCandidates(animationName, m_animationFallbackBasePath);
+
+    candidates.insert(
+        candidates.end(),
+        directCandidates.begin(),
+        directCandidates.end());
+
+    if (animationSetFolder)
+    {
+        candidates.push_back(m_animationFallbackBasePath / *animationSetFolder / animationName);
+    }
+
+    if (const auto found = FirstExistingPath(candidates, animationName, ".prs", "PRS animation"))
+    {
+        return found;
+    }
+
+    Log::Warning() << "PRS animation unresolved after all candidates: "
+        << animationName << std::endl;
+
+    return std::nullopt;
 }
 
 std::optional<std::filesystem::path> ResourceResolver::ResolveRawTexturePath(

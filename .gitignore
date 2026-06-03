@@ -70,6 +70,7 @@ compile_commands.json
 viewer.ini
 *.local.ini
 *.user.ini
+viewer.properties
 
 
 # ============================================================
