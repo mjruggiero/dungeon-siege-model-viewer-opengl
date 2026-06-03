@@ -114,3 +114,12 @@ configuration templates, and third-party dependency files only.
 
 Do not commit Dungeon Siege game assets, extracted asset folders, local
 configuration files, or NamingKey data files.
+
+## Legal
+
+This project does not include Dungeon Siege game assets. To use the viewer,
+you must provide your own local copy of the game data.
+
+Dungeon Siege is owned by its respective rights holders. This project is an
+unofficial fan/research tool and is not affiliated with or endorsed by the
+owners of Dungeon Siege.
