@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "model.h"
 #include "utilities.h"
+#include "Log.h"
 
 CASPModel model;
 float angle = 0.0f;
@@ -109,9 +110,17 @@ void keyboard(unsigned char key, int x, int y)
 		pause = !pause;
 	if (key == 'r' || key == 'R')
 		my_rotate = !my_rotate;
+	if (key == 'l' || key == 'L')
+	{
+		Log::SetDebugEnabled(!Log::IsDebugEnabled());
+		Log::Info() << "Debug logging " << (Log::IsDebugEnabled() ? "enabled" : "disabled") << std::endl;
+	}
 	if (key == 'd' || key == 'D')
 	{
+		const bool wasDebugEnabled = Log::IsDebugEnabled();
+		Log::SetDebugEnabled(true);
 		model.PrintBoneInfo();
+		Log::SetDebugEnabled(wasDebugEnabled);
 	}
 
 	if (mode)
