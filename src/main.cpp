@@ -40,20 +40,29 @@ namespace
 int main(int argc, char** argv)
 {
 #ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF);
 #endif
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(640, 480);
-	glutCreateWindow("Dungeon Siege ASP Model Viewer");
+
+	const int windowId = glutCreateWindow("Dungeon Siege ASP Model Viewer");
+
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	g_application = std::make_unique<ViewerApplication>();
 
 	if (!g_application->Initialize())
 	{
 		Log::Error() << "Failed to initialize viewer application." << std::endl;
+		g_application.reset();
+
+#ifdef _DEBUG
+		_CrtDumpMemoryLeaks();
+#endif
+
 		return EXIT_FAILURE;
 	}
 
@@ -63,6 +72,14 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(KeyboardCallback);
 
 	glutMainLoop();
+
+	g_application.reset();
+
+	glutDestroyWindow(windowId);
+
+#ifdef _DEBUG
+	_CrtDumpMemoryLeaks();
+#endif
 
 	return EXIT_SUCCESS;
 }

@@ -16,24 +16,12 @@ Bone::Bone()
 
 Bone::~Bone()
 {
-	/* FIX THIS!!
-	if(m_pChild)
-	{
-		delete m_pChild;
-		m_pChild = nullptr;
-	}
-
-	if(m_pSibling)
-	{
-		delete m_pSibling;
-		m_pSibling = nullptr;
-	}
+	delete[] name;
+	name = nullptr;
 
 	m_pParent = nullptr;
-
-	if(name)
-		delete [] name;
-	*/
+	m_pSibling = nullptr;
+	m_pChild = nullptr;
 }
 
 void Bone::AddChild(Bone* pBone)

@@ -5,17 +5,20 @@
 #include <GL/freeglut.h>
 
 SubMesh::SubMesh()
+	: tex(nullptr)
+	, m_pBones(nullptr)
+	, m_numBones(0)
+	, m_header{}
+	, m_Material{}
+	, m_Vertex{}
+	, m_Corner{}
+	, m_Vertices(nullptr)
+	, m_CornerExtended{}
+	, m_VertexMapping{}
+	, m_Face{}
+	, m_VertexWeight{}
+	, m_Stitches{}
 {
-	m_Material.materials = nullptr;
-	m_Vertex.vertices = nullptr;
-	m_Corner.corners = nullptr;
-	m_Vertices = nullptr;
-	m_CornerExtended.corners = nullptr;
-	m_VertexMapping.vertexMaps = nullptr;
-	m_Face.materials = nullptr;
-	m_Face.faces = nullptr;
-	m_VertexWeight.bones = nullptr;
-	m_Stitches.stitches = nullptr;
 }
 
 SubMesh::~SubMesh()
