@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 
-using namespace std;
-
 char* LoadRawFile(const char* filename, int& width, int& height)
 {
 	FILE* pFile;
@@ -16,8 +14,8 @@ char* LoadRawFile(const char* filename, int& width, int& height)
 	pFile = fopen(path, "rb");
 	if (!pFile)
 	{
-		Log::Error() << "Couldn't find file: " << filename << endl;
-		return NULL;
+		Log::Error() << "Couldn't find file: " << filename << std::endl;
+		return nullptr;
 	}
 
 	rawheader_t header;
@@ -27,9 +25,9 @@ char* LoadRawFile(const char* filename, int& width, int& height)
 	height = header.height;
 
 	if (strncmp(header.magic, "ipaR", 4) != 0)
-		return NULL;
+		return nullptr;
 	if (header.format != '8888')
-		return NULL;
+		return nullptr;
 
 	char* buffer = new char[header.width * header.height * 4];
 

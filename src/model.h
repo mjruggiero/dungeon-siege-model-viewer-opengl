@@ -9,7 +9,6 @@
 #include "aspfile.h"
 #include "Animation.h"
 #include "ResourceResolver.h"
-using namespace std;
 
 class CFileTreeNode
 {

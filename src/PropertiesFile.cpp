@@ -7,189 +7,189 @@
 
 namespace
 {
-    std::string Trim(std::string value)
-    {
-        const auto isNotSpace = [](const unsigned char ch)
-            {
-                return !std::isspace(ch);
-            };
+	std::string Trim(std::string value)
+	{
+		const auto isNotSpace = [](const unsigned char ch)
+			{
+				return !std::isspace(ch);
+			};
 
-        value.erase(
-            value.begin(),
-            std::find_if(value.begin(), value.end(), isNotSpace));
+		value.erase(
+			value.begin(),
+			std::find_if(value.begin(), value.end(), isNotSpace));
 
-        value.erase(
-            std::find_if(value.rbegin(), value.rend(), isNotSpace).base(),
-            value.end());
+		value.erase(
+			std::find_if(value.rbegin(), value.rend(), isNotSpace).base(),
+			value.end());
 
-        return value;
-    }
+		return value;
+	}
 
-    std::string ToLower(std::string value)
-    {
-        std::transform(
-            value.begin(),
-            value.end(),
-            value.begin(),
-            [](const unsigned char ch)
-            {
-                return static_cast<char>(std::tolower(ch));
-            });
+	std::string ToLower(std::string value)
+	{
+		std::transform(
+			value.begin(),
+			value.end(),
+			value.begin(),
+			[](const unsigned char ch)
+			{
+				return static_cast<char>(std::tolower(ch));
+			});
 
-        return value;
-    }
+		return value;
+	}
 
-    bool IsCommentOrBlankLine(const std::string& line)
-    {
-        const std::string trimmed = Trim(line);
+	bool IsCommentOrBlankLine(const std::string& line)
+	{
+		const std::string trimmed = Trim(line);
 
-        return trimmed.empty() ||
-            trimmed[0] == '#' ||
-            trimmed[0] == '!';
-    }
+		return trimmed.empty() ||
+			trimmed[0] == '#' ||
+			trimmed[0] == '!';
+	}
 
-    std::size_t FindSeparator(const std::string& line)
-    {
-        const std::size_t equalsPosition = line.find('=');
-        const std::size_t colonPosition = line.find(':');
+	std::size_t FindSeparator(const std::string& line)
+	{
+		const std::size_t equalsPosition = line.find('=');
+		const std::size_t colonPosition = line.find(':');
 
-        if (equalsPosition == std::string::npos)
-        {
-            return colonPosition;
-        }
+		if (equalsPosition == std::string::npos)
+		{
+			return colonPosition;
+		}
 
-        if (colonPosition == std::string::npos)
-        {
-            return equalsPosition;
-        }
+		if (colonPosition == std::string::npos)
+		{
+			return equalsPosition;
+		}
 
-        return std::min(equalsPosition, colonPosition);
-    }
+		return std::min(equalsPosition, colonPosition);
+	}
 
-    bool TryParseBool(const std::string& text, bool& result)
-    {
-        const std::string lowered = ToLower(Trim(text));
+	bool TryParseBool(const std::string& text, bool& result)
+	{
+		const std::string lowered = ToLower(Trim(text));
 
-        if (lowered == "true" || lowered == "yes" || lowered == "1" || lowered == "on")
-        {
-            result = true;
-            return true;
-        }
+		if (lowered == "true" || lowered == "yes" || lowered == "1" || lowered == "on")
+		{
+			result = true;
+			return true;
+		}
 
-        if (lowered == "false" || lowered == "no" || lowered == "0" || lowered == "off")
-        {
-            result = false;
-            return true;
-        }
+		if (lowered == "false" || lowered == "no" || lowered == "0" || lowered == "off")
+		{
+			result = false;
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }
 
 PropertiesFile PropertiesFile::LoadFromFile(const std::filesystem::path& path)
 {
-    PropertiesFile properties{};
+	PropertiesFile properties{};
 
-    std::ifstream file(path);
+	std::ifstream file(path);
 
-    if (!file)
-    {
-        return properties;
-    }
+	if (!file)
+	{
+		return properties;
+	}
 
-    std::string line;
+	std::string line;
 
-    while (std::getline(file, line))
-    {
-        if (IsCommentOrBlankLine(line))
-        {
-            continue;
-        }
+	while (std::getline(file, line))
+	{
+		if (IsCommentOrBlankLine(line))
+		{
+			continue;
+		}
 
-        const std::string trimmedLine = Trim(line);
-        const std::size_t separatorPosition = FindSeparator(trimmedLine);
+		const std::string trimmedLine = Trim(line);
+		const std::size_t separatorPosition = FindSeparator(trimmedLine);
 
-        if (separatorPosition == std::string::npos)
-        {
-            continue;
-        }
+		if (separatorPosition == std::string::npos)
+		{
+			continue;
+		}
 
-        std::string key = Trim(trimmedLine.substr(0, separatorPosition));
-        std::string value = Trim(trimmedLine.substr(separatorPosition + 1));
+		std::string key = Trim(trimmedLine.substr(0, separatorPosition));
+		std::string value = Trim(trimmedLine.substr(separatorPosition + 1));
 
-        if (key.empty())
-        {
-            continue;
-        }
+		if (key.empty())
+		{
+			continue;
+		}
 
-        properties.SetValue(std::move(key), std::move(value));
-    }
+		properties.SetValue(std::move(key), std::move(value));
+	}
 
-    return properties;
+	return properties;
 }
 
 bool PropertiesFile::HasKey(const std::string& key) const
 {
-    return m_values.find(key) != m_values.end();
+	return m_values.find(key) != m_values.end();
 }
 
 std::string PropertiesFile::GetString(
-    const std::string& key,
-    const std::string& defaultValue) const
+	const std::string& key,
+	const std::string& defaultValue) const
 {
-    const auto found = m_values.find(key);
+	const auto found = m_values.find(key);
 
-    if (found == m_values.end())
-    {
-        return defaultValue;
-    }
+	if (found == m_values.end())
+	{
+		return defaultValue;
+	}
 
-    return found->second;
+	return found->second;
 }
 
 bool PropertiesFile::GetBool(
-    const std::string& key,
-    const bool defaultValue) const
+	const std::string& key,
+	const bool defaultValue) const
 {
-    const auto found = m_values.find(key);
+	const auto found = m_values.find(key);
 
-    if (found == m_values.end())
-    {
-        return defaultValue;
-    }
+	if (found == m_values.end())
+	{
+		return defaultValue;
+	}
 
-    bool parsedValue{};
+	bool parsedValue{};
 
-    if (!TryParseBool(found->second, parsedValue))
-    {
-        return defaultValue;
-    }
+	if (!TryParseBool(found->second, parsedValue))
+	{
+		return defaultValue;
+	}
 
-    return parsedValue;
+	return parsedValue;
 }
 
 float PropertiesFile::GetFloat(
-    const std::string& key,
-    const float defaultValue) const
+	const std::string& key,
+	const float defaultValue) const
 {
-    const auto found = m_values.find(key);
+	const auto found = m_values.find(key);
 
-    if (found == m_values.end())
-    {
-        return defaultValue;
-    }
+	if (found == m_values.end())
+	{
+		return defaultValue;
+	}
 
-    try
-    {
-        return std::stof(found->second);
-    }
-    catch (...)
-    {
-        return defaultValue;
-    }
+	try
+	{
+		return std::stof(found->second);
+	}
+	catch (...)
+	{
+		return defaultValue;
+	}
 }
 
 void PropertiesFile::SetValue(std::string key, std::string value)
 {
-    m_values[std::move(key)] = std::move(value);
+	m_values[std::move(key)] = std::move(value);
 }

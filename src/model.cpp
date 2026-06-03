@@ -11,9 +11,9 @@ extern bool bones;
 
 CFileTreeNode::CFileTreeNode()
 {
-	m_pParent = NULL;
-	m_pChild = NULL;
-	m_pSibling = NULL;
+	m_pParent = nullptr;
+	m_pChild = nullptr;
+	m_pSibling = nullptr;
 }
 
 CFileTreeNode::~CFileTreeNode()
@@ -29,7 +29,7 @@ void CFileTreeNode::AddChild(CFileTreeNode* pChild)
 	if (strlen(pChild->m_pszAcronym) != 1)
 	{
 		// find node where this belongs
-		while (pIter->m_pSibling != NULL)
+		while (pIter->m_pSibling != nullptr)
 		{
 			if (!strncmp(pIter->m_pszAcronym, pChild->m_pszAcronym, strlen(pIter->m_pszAcronym)))
 			{
@@ -39,14 +39,14 @@ void CFileTreeNode::AddChild(CFileTreeNode* pChild)
 		}
 	}
 
-	if (pParent->m_pChild == NULL)
+	if (pParent->m_pChild == nullptr)
 	{
 		pParent->m_pChild = pChild;
 	}
 	else
 	{
 		CFileTreeNode* pIter = pParent->m_pChild;
-		while (pIter->m_pSibling != NULL)
+		while (pIter->m_pSibling != nullptr)
 		{
 			pIter = pIter->m_pSibling;
 		}
@@ -59,7 +59,7 @@ void CFileTreeNode::AddChild(CFileTreeNode* pChild)
 
 CFilePathTree::CFilePathTree()
 {
-	//m_pRoot = NULL;
+	//m_pRoot = nullptr;
 }
 
 CFilePathTree::~CFilePathTree()
@@ -85,14 +85,14 @@ bool CFilePathTree::ParseNNKFile(const char* filename)
 		{
 			//int x = 0;
 			strcpy(str, &str[7]);
-			char* token = NULL;
+			char* token = nullptr;
 			token = strtok(str, ",\t ");
 			if (token)
 				strcpy(name.m_pszAcronym, token);
-			token = strtok(NULL, ",");
+			token = strtok(nullptr, ",");
 			if (token)
 				strcpy(name.m_pszPath, &token[1]);
-			token = strtok(NULL, ",");
+			token = strtok(nullptr, ",");
 			if (token)
 				strcpy(name.m_pszName, token);
 			m_vNames.push_back(name);
@@ -114,22 +114,22 @@ bool CFilePathTree::ParseNNKFile(const char* filename)
 
 char* CFilePathTree::GetFilePath(const char* filename)
 {
-	return NULL;
+	return nullptr;
 }
 
 //	CFileTreeNode *m_pRoot;
 
 CSubMesh::CSubMesh()
 {
-	m_Material.materials = NULL;
-	m_Vertex.vertices = NULL;
-	m_Corner.corners = NULL;
-	m_CornerExtended.corners = NULL;
-	m_VertexMapping.vertexMaps = NULL;
-	m_Face.materials = NULL;
-	m_Face.faces = NULL;
-	m_VertexWeight.bones = NULL;
-	m_Stitches.stitches = NULL;
+	m_Material.materials = nullptr;
+	m_Vertex.vertices = nullptr;
+	m_Corner.corners = nullptr;
+	m_CornerExtended.corners = nullptr;
+	m_VertexMapping.vertexMaps = nullptr;
+	m_Face.materials = nullptr;
+	m_Face.faces = nullptr;
+	m_VertexWeight.bones = nullptr;
+	m_Stitches.stitches = nullptr;
 }
 
 CSubMesh::~CSubMesh()
@@ -299,7 +299,7 @@ bool CSubMesh::Read(FILE* pFile, int numBones)
 			fread(m_VertexWeight.bones[i].vertices, sizeof(affectedVertex_t), m_VertexWeight.bones[i].numVertices, pFile);
 		}
 		else
-			m_VertexWeight.bones[i].vertices = NULL;
+			m_VertexWeight.bones[i].vertices = nullptr;
 	}
 
 	// read stitches
@@ -329,71 +329,71 @@ void CSubMesh::Print()
 	}
 
 	int i;
-	Log::Debug() << "HEADER" << endl;
-	Log::Debug() << "m_header.id=" << m_header.id << endl;
-	Log::Debug() << "m_header.numMaterials=" << m_header.numMaterials << endl;
-	Log::Debug() << "m_header.numVertices=" << m_header.numVertices << endl;
-	Log::Debug() << "m_header.numCorners=" << m_header.numCorners << endl;
-	Log::Debug() << "m_header.numFaces=" << m_header.numFaces << endl;
+	Log::Debug() << "HEADER" << std::endl;
+	Log::Debug() << "m_header.id=" << m_header.id << std::endl;
+	Log::Debug() << "m_header.numMaterials=" << m_header.numMaterials << std::endl;
+	Log::Debug() << "m_header.numVertices=" << m_header.numVertices << std::endl;
+	Log::Debug() << "m_header.numCorners=" << m_header.numCorners << std::endl;
+	Log::Debug() << "m_header.numFaces=" << m_header.numFaces << std::endl;
 
-	Log::Debug() << "MATERIALS" << endl;
-	Log::Debug() << "m_Material.numMaterials=" << m_Material.numMaterials << endl;
+	Log::Debug() << "MATERIALS" << std::endl;
+	Log::Debug() << "m_Material.numMaterials=" << m_Material.numMaterials << std::endl;
 	for (i = 0; i < m_Material.numMaterials; ++i)
 	{
-		Log::Debug() << "m_Material.materials[" << i << "].index=" << m_Material.materials[i].index << endl;
-		Log::Debug() << "m_Material.materials[" << i << "].numFaces=" << m_Material.materials[i].numFaces << endl;
+		Log::Debug() << "m_Material.materials[" << i << "].index=" << m_Material.materials[i].index << std::endl;
+		Log::Debug() << "m_Material.materials[" << i << "].numFaces=" << m_Material.materials[i].numFaces << std::endl;
 	}
 
-	Log::Debug() << "VERTEX" << endl;
-	Log::Debug() << "m_Vertex.numVertices=" << m_Vertex.numVertices << endl;
+	Log::Debug() << "VERTEX" << std::endl;
+	Log::Debug() << "m_Vertex.numVertices=" << m_Vertex.numVertices << std::endl;
 	for (i = 0; i < m_Vertex.numVertices; ++i)
 	{
 		Log::Debug() << "m_Vertex.vertices[" << i << "].=(" << m_Vertex.vertices[i].x << ","
 			<< m_Vertex.vertices[i].y << ","
-			<< m_Vertex.vertices[i].z << ")" << endl;
+			<< m_Vertex.vertices[i].z << ")" << std::endl;
 	}
 
-	Log::Debug() << "CORNER" << endl;
-	Log::Debug() << "m_Corner.numCorners=" << m_Corner.numCorners << endl;
+	Log::Debug() << "CORNER" << std::endl;
+	Log::Debug() << "m_Corner.numCorners=" << m_Corner.numCorners << std::endl;
 	for (i = 0; i < m_Corner.numCorners; ++i)
 	{
-		Log::Debug() << "m_Corner.corners[" << i << "].vertexIndex=" << m_Corner.corners[i].vertexIndex << endl;
+		Log::Debug() << "m_Corner.corners[" << i << "].vertexIndex=" << m_Corner.corners[i].vertexIndex << std::endl;
 		Log::Debug() << "m_Corner.corners[" << i << "].normal=(" << m_Corner.corners[i].normal.x << ","
 			<< m_Corner.corners[i].normal.x << ","
-			<< m_Corner.corners[i].normal.x << ")" << endl;
-		Log::Debug() << "m_Corner.corners[" << i << "].unknown1=" << m_Corner.corners[i].unknown1 << endl;
-		Log::Debug() << "m_Corner.corners[" << i << "].unknown2=" << m_Corner.corners[i].unknown2 << endl;
-		Log::Debug() << "m_Corner.corners[" << i << "].u=" << m_Corner.corners[i].u << endl;
-		Log::Debug() << "m_Corner.corners[" << i << "].v=" << m_Corner.corners[i].v << endl;
+			<< m_Corner.corners[i].normal.x << ")" << std::endl;
+		Log::Debug() << "m_Corner.corners[" << i << "].unknown1=" << m_Corner.corners[i].unknown1 << std::endl;
+		Log::Debug() << "m_Corner.corners[" << i << "].unknown2=" << m_Corner.corners[i].unknown2 << std::endl;
+		Log::Debug() << "m_Corner.corners[" << i << "].u=" << m_Corner.corners[i].u << std::endl;
+		Log::Debug() << "m_Corner.corners[" << i << "].v=" << m_Corner.corners[i].v << std::endl;
 	}
 
-	Log::Debug() << "EXTENDED CORNER" << endl;
-	Log::Debug() << "m_CornerExtended.numCorners=" << m_CornerExtended.numCorners << endl;
+	Log::Debug() << "EXTENDED CORNER" << std::endl;
+	Log::Debug() << "m_CornerExtended.numCorners=" << m_CornerExtended.numCorners << std::endl;
 	for (i = 0; i < m_CornerExtended.numCorners; ++i)
 	{
 		Log::Debug() << "m_CornerExtended.corners[" << i << "].position=(" << m_CornerExtended.corners[i].position.x << ","
 			<< m_CornerExtended.corners[i].position.y << ","
-			<< m_CornerExtended.corners[i].position.z << ")" << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight0=" << m_CornerExtended.corners[i].boneWeight0 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight1=" << m_CornerExtended.corners[i].boneWeight1 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight2=" << m_CornerExtended.corners[i].boneWeight2 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight3=" << m_CornerExtended.corners[i].boneWeight3 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex0=" << (short)m_CornerExtended.corners[i].boneIndex0 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex1=" << (short)m_CornerExtended.corners[i].boneIndex1 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex2=" << (short)m_CornerExtended.corners[i].boneIndex2 << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex3=" << (short)m_CornerExtended.corners[i].boneIndex3 << endl;
+			<< m_CornerExtended.corners[i].position.z << ")" << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight0=" << m_CornerExtended.corners[i].boneWeight0 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight1=" << m_CornerExtended.corners[i].boneWeight1 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight2=" << m_CornerExtended.corners[i].boneWeight2 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneWeight3=" << m_CornerExtended.corners[i].boneWeight3 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex0=" << (short)m_CornerExtended.corners[i].boneIndex0 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex1=" << (short)m_CornerExtended.corners[i].boneIndex1 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex2=" << (short)m_CornerExtended.corners[i].boneIndex2 << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].boneIndex3=" << (short)m_CornerExtended.corners[i].boneIndex3 << std::endl;
 		Log::Debug() << "m_CornerExtended.corners[" << i << "].normal=(" << m_CornerExtended.corners[i].normal.x << ","
 			<< m_CornerExtended.corners[i].normal.y << ","
-			<< m_CornerExtended.corners[i].normal.z << ")" << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].unknown=" << m_CornerExtended.corners[i].unknown << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].u=" << m_CornerExtended.corners[i].u << endl;
-		Log::Debug() << "m_CornerExtended.corners[" << i << "].v=" << m_CornerExtended.corners[i].v << endl;
+			<< m_CornerExtended.corners[i].normal.z << ")" << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].unknown=" << m_CornerExtended.corners[i].unknown << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].u=" << m_CornerExtended.corners[i].u << std::endl;
+		Log::Debug() << "m_CornerExtended.corners[" << i << "].v=" << m_CornerExtended.corners[i].v << std::endl;
 	}
 
-	Log::Debug() << "VERTEX MAPPING" << endl;
+	Log::Debug() << "VERTEX MAPPING" << std::endl;
 	for (i = 0; i < m_Vertex.numVertices; ++i)
 	{
-		Log::Debug() << "m_VertexMapping.vertexMaps[" << i << "].numCorners=" << m_VertexMapping.vertexMaps[i].numCorners << endl;
+		Log::Debug() << "m_VertexMapping.vertexMaps[" << i << "].numCorners=" << m_VertexMapping.vertexMaps[i].numCorners << std::endl;
 		Log::Debug() << "m_VertexMapping.vertexMaps[" << i << "].cornerIndices=";
 		for (int j = 0; j < m_VertexMapping.vertexMaps[i].numCorners; ++j)
 		{
@@ -401,43 +401,43 @@ void CSubMesh::Print()
 				Log::Debug() << ",";
 			Log::Debug() << m_VertexMapping.vertexMaps[i].cornerIndices[j];
 		}
-		Log::Debug() << endl;
+		Log::Debug() << std::endl;
 	}
 
-	Log::Debug() << "FACE" << endl;
-	Log::Debug() << "m_Face.numFaces=" << m_Face.numFaces << endl;
+	Log::Debug() << "FACE" << std::endl;
+	Log::Debug() << "m_Face.numFaces=" << m_Face.numFaces << std::endl;
 	for (i = 0; i < m_Material.numMaterials; ++i)
 	{
-		Log::Debug() << "m_Faces.materials[" << i << "].index=" << m_Face.materials[i].index << endl;
-		Log::Debug() << "m_Faces.materials[" << i << "].numFaces=" << m_Face.materials[i].numFaces << endl;
+		Log::Debug() << "m_Faces.materials[" << i << "].index=" << m_Face.materials[i].index << std::endl;
+		Log::Debug() << "m_Faces.materials[" << i << "].numFaces=" << m_Face.materials[i].numFaces << std::endl;
 	}
 	for (i = 0; i < m_Face.numFaces; ++i)
 	{
-		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerA=" << m_Face.faces[i].indexCornerA << endl;
-		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerB=" << m_Face.faces[i].indexCornerB << endl;
-		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerC=" << m_Face.faces[i].indexCornerC << endl;
+		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerA=" << m_Face.faces[i].indexCornerA << std::endl;
+		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerB=" << m_Face.faces[i].indexCornerB << std::endl;
+		Log::Debug() << "m_Faces.faces[" << i << "].indexCornerC=" << m_Face.faces[i].indexCornerC << std::endl;
 	}
 
-	Log::Debug() << "VERTEX WEIGHTS" << endl;
+	Log::Debug() << "VERTEX WEIGHTS" << std::endl;
 	for (i = 0; i < m_numBones; ++i)
 	{
-		Log::Debug() << "m_VertexWeight.bones[" << i << "].numVertices=" << m_VertexWeight.bones[i].numVertices << endl;
+		Log::Debug() << "m_VertexWeight.bones[" << i << "].numVertices=" << m_VertexWeight.bones[i].numVertices << std::endl;
 		for (int j = 0; j < m_VertexWeight.bones[i].numVertices; ++j)
 		{
 			Log::Debug() << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].index="
-				<< m_VertexWeight.bones[i].vertices[j].index << endl;
+				<< m_VertexWeight.bones[i].vertices[j].index << std::endl;
 			Log::Debug() << "m_VertexWeight.bones[" << i << "].vertices[" << j << "].weighting="
-				<< m_VertexWeight.bones[i].vertices[j].weighting << endl;
+				<< m_VertexWeight.bones[i].vertices[j].weighting << std::endl;
 		}
 	}
 
-	Log::Debug() << "STITCHES" << endl;
+	Log::Debug() << "STITCHES" << std::endl;
 	//stch_t m_Stitches;
-	Log::Debug() << "m_Stitches.x=" << m_Stitches.numStitches << endl;
+	Log::Debug() << "m_Stitches.x=" << m_Stitches.numStitches << std::endl;
 	for (i = 0; i < m_Stitches.numStitches; ++i)
 	{
-		Log::Debug() << "m_Stitches.stitches[" << i << "].token=" << m_Stitches.stitches[i].token << endl;
-		Log::Debug() << "m_Stitches.stitches[" << i << "].numVertices=" << m_Stitches.stitches[i].numVertices << endl;
+		Log::Debug() << "m_Stitches.stitches[" << i << "].token=" << m_Stitches.stitches[i].token << std::endl;
+		Log::Debug() << "m_Stitches.stitches[" << i << "].numVertices=" << m_Stitches.stitches[i].numVertices << std::endl;
 		Log::Debug() << "m_Stitches.stitches[" << i << "].vertices=";
 		for (int j = 0; j < m_Stitches.stitches[i].numVertices; ++j)
 		{
@@ -445,7 +445,7 @@ void CSubMesh::Print()
 				Log::Debug() << ",";
 			Log::Debug() << m_Stitches.stitches[i].vertices[j];
 		}
-		Log::Debug() << endl;
+		Log::Debug() << std::endl;
 	}
 }
 
@@ -573,10 +573,10 @@ void CSubMesh::Update()
 
 CBone::CBone()
 {
-	name = NULL;
-	m_pParent = NULL;
-	m_pSibling = NULL;
-	m_pChild = NULL;
+	name = nullptr;
+	m_pParent = nullptr;
+	m_pSibling = nullptr;
+	m_pChild = nullptr;
 	glLoadIdentity();
 	glGetFloatv(GL_MODELVIEW_MATRIX, m_localMatrix);
 }
@@ -587,16 +587,16 @@ CBone::~CBone()
 	if(m_pChild)
 	{
 		delete m_pChild;
-		m_pChild = NULL;
+		m_pChild = nullptr;
 	}
 
 	if(m_pSibling)
 	{
 		delete m_pSibling;
-		m_pSibling = NULL;
+		m_pSibling = nullptr;
 	}
 
-	m_pParent = NULL;
+	m_pParent = nullptr;
 
 	if(name)
 		delete [] name;
@@ -605,14 +605,14 @@ CBone::~CBone()
 
 void CBone::AddChild(CBone* pBone)
 {
-	if (m_pChild == NULL)
+	if (m_pChild == nullptr)
 	{
 		m_pChild = pBone;
 	}
 	else
 	{
 		CBone* pIter = m_pChild;
-		while (pIter->m_pSibling != NULL)
+		while (pIter->m_pSibling != nullptr)
 		{
 			pIter = pIter->m_pSibling;
 		}
@@ -649,19 +649,19 @@ void CBone::Render()
 	glBegin(GL_LINES);
 
 	// x axis
-	glColor3f(1.0, 0.0, 0.0);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.05, 0.0, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.05f, 0.0f, 0.0f);
 
 	// y axis
-	glColor3f(0.0, 1.0, 0.0);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.0, 0.05, 0.0);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.05f, 0.0f);
 
 	// z axis
-	glColor3f(0.0, 0.0, 1.0);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.0, 0.0, 0.05);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.05f);
 
 	glEnd();
 
@@ -685,30 +685,30 @@ void CBone::Print()
 		return;
 	}
 
-	Log::Debug() << "BONE #" << id << endl;
-	Log::Debug() << "name=" << name << endl;
+	Log::Debug() << "BONE #" << id << std::endl;
+	Log::Debug() << "name=" << name << std::endl;
 	if (m_pParent)
-		Log::Debug() << "m_pParent=" << m_pParent->id << endl;
+		Log::Debug() << "m_pParent=" << m_pParent->id << std::endl;
 	if (m_pSibling)
-		Log::Debug() << "m_pSibling=" << m_pSibling->id << endl;
+		Log::Debug() << "m_pSibling=" << m_pSibling->id << std::endl;
 	if (m_pChild)
-		Log::Debug() << "m_pChild=" << m_pChild->id << endl;
+		Log::Debug() << "m_pChild=" << m_pChild->id << std::endl;
 	Log::Debug() << "inverseRotation=(" << inverseRotation.w << "," << inverseRotation.x << "," << inverseRotation.y
-		<< "," << inverseRotation.z << ")" << endl;
+		<< "," << inverseRotation.z << ")" << std::endl;
 	Log::Debug() << "inverseTranslation=(" << inverseTranslation.x << "," << inverseTranslation.y
-		<< "," << inverseTranslation.z << ")" << endl;
+		<< "," << inverseTranslation.z << ")" << std::endl;
 	Log::Debug() << "localRotation=(" << localRotation.w << "," << localRotation.x << "," << localRotation.y
-		<< "," << localRotation.z << ")" << endl;
+		<< "," << localRotation.z << ")" << std::endl;
 	Log::Debug() << "localTranslation=(" << localTranslation.x << "," << localTranslation.y
-		<< "," << localTranslation.z << ")" << endl;
+		<< "," << localTranslation.z << ")" << std::endl;
 	Log::Debug() << "m_localMatrix=" << m_localMatrix[0] << "," << m_localMatrix[4] << "," << m_localMatrix[8]
-		<< "," << m_localMatrix[12] << endl;
+		<< "," << m_localMatrix[12] << std::endl;
 	Log::Debug() << "              " << m_localMatrix[1] << "," << m_localMatrix[5] << "," << m_localMatrix[9]
-		<< "," << m_localMatrix[13] << endl;
+		<< "," << m_localMatrix[13] << std::endl;
 	Log::Debug() << "              " << m_localMatrix[2] << "," << m_localMatrix[6] << "," << m_localMatrix[10]
-		<< "," << m_localMatrix[14] << endl;
+		<< "," << m_localMatrix[14] << std::endl;
 	Log::Debug() << "              " << m_localMatrix[3] << "," << m_localMatrix[7] << "," << m_localMatrix[11]
-		<< "," << m_localMatrix[15] << endl;
+		<< "," << m_localMatrix[15] << std::endl;
 }
 
 CASPModel::CASPModel()
@@ -765,7 +765,7 @@ bool CASPModel::Load(const char* filename)
 
 		if (!resolvedPath)
 		{
-			Log::Error() << "Couldn't resolve ASP model: " << filename << endl;
+			Log::Error() << "Couldn't resolve ASP model: " << filename << std::endl;
 			return false;
 		}
 
@@ -780,7 +780,7 @@ bool CASPModel::Load(const char* filename)
 
 	if (!pFile)
 	{
-		Log::Error() << "Couldn't open ASP model: " << fullPath.string() << endl;
+		Log::Error() << "Couldn't open ASP model: " << fullPath.string() << std::endl;
 		return false;
 	}
 
@@ -892,59 +892,59 @@ void CASPModel::Print()
 	}
 
 	int i;
-	Log::Debug() << "HEADER" << endl;
-	Log::Debug() << "m_header.sizeTextField=" << m_header.sizeTextField << endl;
-	Log::Debug() << "m_header.numBones=" << m_header.numBones << endl;
-	Log::Debug() << "m_header.numMaterials=" << m_header.numMaterials << endl;
-	Log::Debug() << "m_header.numVertices=" << m_header.numVertices << endl;
-	Log::Debug() << "m_header.numSubmeshes=" << m_header.numSubmeshes << endl;
+	Log::Debug() << "HEADER" << std::endl;
+	Log::Debug() << "m_header.sizeTextField=" << m_header.sizeTextField << std::endl;
+	Log::Debug() << "m_header.numBones=" << m_header.numBones << std::endl;
+	Log::Debug() << "m_header.numMaterials=" << m_header.numMaterials << std::endl;
+	Log::Debug() << "m_header.numVertices=" << m_header.numVertices << std::endl;
+	Log::Debug() << "m_header.numSubmeshes=" << m_header.numSubmeshes << std::endl;
 	Log::Debug() << "m_header.textField=";
 	//Log::Debug() << "m_header.textField=" << m_header.textField << endl;
 	for (i = 0; i < m_header.sizeTextField; ++i)
 		Log::Debug() << m_header.textField[i];
-	Log::Debug() << endl;
+	Log::Debug() << std::endl;
 
-	Log::Debug() << "BONES" << endl;
+	Log::Debug() << "BONES" << std::endl;
 	for (i = 0; i < m_header.numBones; ++i)
 	{
-		Log::Debug() << "name=" << &m_header.textField[m_pMeshBones[i].nameOffset] << endl;
-		Log::Debug() << "m_pMeshBones[" << i << "].index=" << m_pMeshBones[i].index << endl;
-		Log::Debug() << "m_pMeshBones[" << i << "].parentIndex=" << m_pMeshBones[i].parentIndex << endl;
-		Log::Debug() << "m_pMeshBones[" << i << "].nameOffset=" << m_pMeshBones[i].nameOffset << endl;
+		Log::Debug() << "name=" << &m_header.textField[m_pMeshBones[i].nameOffset] << std::endl;
+		Log::Debug() << "m_pMeshBones[" << i << "].index=" << m_pMeshBones[i].index << std::endl;
+		Log::Debug() << "m_pMeshBones[" << i << "].parentIndex=" << m_pMeshBones[i].parentIndex << std::endl;
+		Log::Debug() << "m_pMeshBones[" << i << "].nameOffset=" << m_pMeshBones[i].nameOffset << std::endl;
 	}
 
 	for (i = 0; i < m_header.numSubmeshes; ++i)
 	{
-		Log::Debug() << "SUBMESH #" << i << endl;
+		Log::Debug() << "SUBMESH #" << i << std::endl;
 		m_pSubMesh[i].Print();
 	}
 
-	Log::Debug() << "BONE INFO" << endl;
-	Log::Debug() << "m_BoneInfo.numBones=" << m_BoneInfo.numBones << endl;
+	Log::Debug() << "BONE INFO" << std::endl;
+	Log::Debug() << "m_BoneInfo.numBones=" << m_BoneInfo.numBones << std::endl;
 	for (i = 0; i < m_BoneInfo.numBones; ++i)
 	{
 		Log::Debug() << "m_BoneInfo.positions[" << i << "].inverseRotation=("
 			<< m_BoneInfo.positions[i].inverseRotation.w << ","
 			<< m_BoneInfo.positions[i].inverseRotation.x << ","
 			<< m_BoneInfo.positions[i].inverseRotation.y << ","
-			<< m_BoneInfo.positions[i].inverseRotation.z << ")" << endl;
+			<< m_BoneInfo.positions[i].inverseRotation.z << ")" << std::endl;
 		Log::Debug() << "m_BoneInfo.positions[" << i << "].inverseTranslation=("
 			<< m_BoneInfo.positions[i].inverseTranslation.x << ","
 			<< m_BoneInfo.positions[i].inverseTranslation.y << ","
-			<< m_BoneInfo.positions[i].inverseTranslation.z << ")" << endl;
+			<< m_BoneInfo.positions[i].inverseTranslation.z << ")" << std::endl;
 		Log::Debug() << "m_BoneInfo.positions[" << i << "].localRotation=("
 			<< m_BoneInfo.positions[i].localRotation.w << ","
 			<< m_BoneInfo.positions[i].localRotation.x << ","
 			<< m_BoneInfo.positions[i].localRotation.y << ","
-			<< m_BoneInfo.positions[i].localRotation.z << ")" << endl;
+			<< m_BoneInfo.positions[i].localRotation.z << ")" << std::endl;
 		Log::Debug() << "m_BoneInfo.positions[" << i << "].localTranslation=("
 			<< m_BoneInfo.positions[i].localTranslation.x << ","
 			<< m_BoneInfo.positions[i].localTranslation.y << ","
-			<< m_BoneInfo.positions[i].localTranslation.z << ")" << endl;
+			<< m_BoneInfo.positions[i].localTranslation.z << ")" << std::endl;
 	}
 
-	Log::Debug() << "BOUNDING BOX" << endl;
-	Log::Debug() << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << endl;
+	Log::Debug() << "BOUNDING BOX" << std::endl;
+	Log::Debug() << "m_BoundingBox.unknown=" << m_BoundingBox.unknown << std::endl;
 }
 
 void CASPModel::LoadTextures()
@@ -969,7 +969,7 @@ void CASPModel::LoadTextures()
 
 			if (!resolvedPath)
 			{
-				Log::Warning() << "Skipping unresolved RAW texture: " << textureName << endl;
+				Log::Warning() << "Skipping unresolved RAW texture: " << textureName << std::endl;
 				continue;
 			}
 
@@ -985,7 +985,7 @@ void CASPModel::LoadTextures()
 		if (buffer == nullptr)
 		{
 			Log::Warning() << "Skipping RAW texture that failed to load: "
-				<< fullPath.string() << endl;
+				<< fullPath.string() << std::endl;
 			continue;
 		}
 
@@ -1163,7 +1163,7 @@ bool CASPModel::LoadAnimation(const char* filename)
 
 		if (!resolvedPath)
 		{
-			Log::Error() << "Couldn't resolve PRS animation: " << filename << endl;
+			Log::Error() << "Couldn't resolve PRS animation: " << filename << std::endl;
 			return false;
 		}
 
@@ -1189,4 +1189,3 @@ void CASPModel::PrintBoneInfo()
 		m_pBones[i].Print();
 	}
 }
-
